@@ -1,0 +1,91 @@
+.recall-panel{
+
+    width:500px;
+
+    margin:auto;
+
+    border:2px solid black;
+
+    padding:20px;
+
+    font-family:Arial;
+
+}
+
+.instructions{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+}
+
+.letter-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    row-gap:22px;
+
+}
+
+.letter-cell{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    justify-content:center;
+
+}
+
+.number-box{
+
+    width:24px;
+
+    height:24px;
+
+    border:1px solid black;
+
+    text-align:center;
+
+    line-height:24px;
+
+    cursor:pointer;
+
+    user-select:none;
+
+}
+
+.letter{
+
+    font-size:28px;
+
+}
+
+.button-row{
+
+    margin-top:30px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+}
+
+.response-string{
+
+    height:35px;
+
+    margin-top:20px;
+
+    text-align:center;
+
+    font-size:28px;
+
+    letter-spacing:3px;
+
+}
