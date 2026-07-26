@@ -1,6 +1,7 @@
 // =====================================================
 // Automated Shortened OSPAN
-// Version 0.3
+// Version 0.4
+// Random Letter Practice
 // =====================================================
 
 // Initialize jsPsych
@@ -17,8 +18,39 @@ const jsPsych = initJsPsych({
 const timeline = [];
 
 // =====================================================
-// Helper Function
-// Creates a sequence of letter presentations
+// OSPAN Letters
+// =====================================================
+
+const LETTERS = [
+    "F","H","J","K",
+    "L","N","P","Q",
+    "R","S","T","Y"
+];
+
+// =====================================================
+// Random Sample Without Replacement
+// =====================================================
+
+function sampleLetters(n){
+
+    let pool = [...LETTERS];
+
+    // Fisher-Yates shuffle
+
+    for(let i = pool.length - 1; i > 0; i--){
+
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+
+    }
+
+    return pool.slice(0,n);
+
+}
+
+// =====================================================
+// Letter Presentation
 // =====================================================
 
 function createLetterPresentation(letterArray){
@@ -27,13 +59,11 @@ function createLetterPresentation(letterArray){
 
     letterArray.forEach(letter=>{
 
-        // Letter
-
         trials.push({
 
             type: jsPsychHtmlKeyboardResponse,
 
-            stimulus: `
+            stimulus:`
                 <div style="
                     font-size:72px;
                     font-family:Arial;
@@ -43,23 +73,21 @@ function createLetterPresentation(letterArray){
                 </div>
             `,
 
-            choices: "NO_KEYS",
+            choices:"NO_KEYS",
 
-            trial_duration: 800
+            trial_duration:800
 
         });
-
-        // Blank ISI
 
         trials.push({
 
             type: jsPsychHtmlKeyboardResponse,
 
-            stimulus: "",
+            stimulus:"",
 
-            choices: "NO_KEYS",
+            choices:"NO_KEYS",
 
-            trial_duration: 250
+            trial_duration:250
 
         });
 
@@ -70,6 +98,12 @@ function createLetterPresentation(letterArray){
 }
 
 // =====================================================
+// Generate One Random Practice Trial
+// =====================================================
+
+const practiceLetters = sampleLetters(3);
+
+// =====================================================
 // Welcome
 // =====================================================
 
@@ -77,10 +111,12 @@ timeline.push({
 
     type: jsPsychHtmlButtonResponse,
 
-    stimulus: `
+    stimulus:`
+
         <h1>Automated Shortened OSPAN</h1>
 
-        <p>Development Version 0.3</p>
+        <p>Development Version 0.4</p>
+
     `,
 
     choices:["Continue"]
@@ -88,7 +124,7 @@ timeline.push({
 });
 
 // =====================================================
-// Ready Screen
+// Ready
 // =====================================================
 
 timeline.push({
@@ -108,17 +144,17 @@ timeline.push({
 });
 
 // =====================================================
-// Present Letters
+// Letters
 // =====================================================
 
 timeline.push(
 
-    ...createLetterPresentation(["F","P","N"])
+    ...createLetterPresentation(practiceLetters)
 
 );
 
 // =====================================================
-// Recall Grid
+// Recall
 // =====================================================
 
 timeline.push({
@@ -141,7 +177,9 @@ timeline.push({
 
             jsPsych.finishTrial({
 
-                recall:responses
+                presentedLetters: practiceLetters,
+
+                recalledLetters: responses
 
             });
 
@@ -152,7 +190,7 @@ timeline.push({
 });
 
 // =====================================================
-// End Screen
+// End
 // =====================================================
 
 timeline.push({
