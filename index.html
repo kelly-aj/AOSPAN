@@ -2,34 +2,33 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <title>Automated Shortened OSPAN</title>
 
-    <!-- jsPsych -->
-    <link rel="stylesheet" href="jspsych/jspsych.css">
+    <!-- jsPsych CSS -->
+    <link href="jspsych/css/jspsych.css" rel="stylesheet">
 
-    <!-- Our CSS -->
-    <link rel="stylesheet" href="style.css">
+    <!-- Your stylesheet -->
+    <link href="style.css" rel="stylesheet">
+
 </head>
 
 <body>
 
-    <!-- jsPsych core -->
+    <!-- jsPsych -->
     <script src="jspsych/jspsych.js"></script>
 
     <!-- Plugins -->
-    <script src="jspsych/plugin-html-keyboard-response.js"></script>
-    <script src="jspsych/plugin-html-button-response.js"></script>
+    <script src="jspsych/plugins/plugin-html-button-response.js"></script>
+    <script src="jspsych/plugins/plugin-html-keyboard-response.js"></script>
 
-<!-- OSPAN Modules -->
-<script src="modules/utilities.js"></script>
-<script src="modules/mathEngine.js"></script>
-<script src="modules/letterPresentation.js"></script>
-<script src="modules/recallGrid.js"></script>
-<script src="modules/recallGrid.js"></script>
+    <!-- OSPAN Modules -->
+    <script src="modules/recallGrid.js"></script>
 
-<!-- Experiment -->
-<script src="experiment.js"></script>
+    <!-- Main Experiment -->
+    <script src="experiment.js"></script>
 
 </body>
 

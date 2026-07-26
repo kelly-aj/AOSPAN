@@ -1,20 +1,36 @@
+/* ======================================================
+   Automated Shortened OSPAN
+   Version 0.2
+   ====================================================== */
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background:white;
+}
+
+.jspsych-content{
+    max-width:900px;
+}
+
 .recall-panel{
 
-    width:500px;
+    width:700px;
 
     margin:auto;
 
+    padding:25px;
+
     border:2px solid black;
 
-    padding:20px;
+    text-align:center;
 
-    font-family:Arial;
+    background:white;
 
 }
 
 .instructions{
 
-    text-align:center;
+    font-size:20px;
 
     margin-bottom:25px;
 
@@ -24,9 +40,13 @@
 
     display:grid;
 
-    grid-template-columns:repeat(3,1fr);
+    grid-template-columns:repeat(4,1fr);
 
-    row-gap:22px;
+    gap:18px;
+
+    width:500px;
+
+    margin:auto;
 
 }
 
@@ -34,25 +54,31 @@
 
     display:flex;
 
+    flex-direction:column;
+
     align-items:center;
-
-    gap:8px;
-
-    justify-content:center;
 
 }
 
 .number-box{
 
-    width:24px;
+    width:48px;
 
-    height:24px;
+    height:48px;
 
-    border:1px solid black;
+    border:2px solid black;
 
-    text-align:center;
+    margin-bottom:8px;
 
-    line-height:24px;
+    font-size:22px;
+
+    font-weight:bold;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
 
     cursor:pointer;
 
@@ -60,19 +86,17 @@
 
 }
 
-.letter{
+.number-box:hover{
 
-    font-size:28px;
+    background:#efefef;
 
 }
 
-.button-row{
+.letter{
 
-    margin-top:30px;
+    font-size:26px;
 
-    display:flex;
-
-    justify-content:space-between;
+    font-weight:bold;
 
 }
 
@@ -80,12 +104,42 @@
 
     height:35px;
 
+    margin-top:25px;
+
+    margin-bottom:20px;
+
+    font-size:24px;
+
+    letter-spacing:4px;
+
+}
+
+.button-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
     margin-top:20px;
 
-    text-align:center;
+}
 
-    font-size:28px;
+.button-row button{
 
-    letter-spacing:3px;
+    font-size:18px;
+
+    padding:10px 30px;
+
+}
+
+#blankBtn{
+
+    margin:auto;
+
+}
+
+#enterBtn:disabled{
+
+    opacity:.5;
 
 }

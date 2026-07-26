@@ -1,8 +1,28 @@
-CONFIG.LETTERS
+// =====================================================
+// Automated Shortened OSPAN
+// Recall Grid Module
+// Version 0.2
+// =====================================================
 
+// Letters in the original Foster et al. grid
+const LETTERS = [
+    "F","H","J","K",
+    "L","N","P","Q",
+    "R","S","T","Y"
+];
+
+// Stores the participant's responses
 let recallResponses = [];
 
-function createRecallGrid(){
+// Function to call when Enter is pressed
+let finishCallback = null;
+
+
+// -----------------------------------------------------
+// Build the HTML
+// -----------------------------------------------------
+
+function createRecallGrid() {
 
     let html = "";
 
@@ -12,30 +32,29 @@ function createRecallGrid(){
         <h2>Recall</h2>
 
         <p class="instructions">
-        Select the letters in the order presented.
-        Use Blank if you forgot one.
+            Select the letters in the order they were presented.
+            If you forgot a letter, press Blank.
         </p>
 
-        <div id="letterGrid" class="letter-grid">
+        <div class="letter-grid">
     `;
 
-    LETTERS.forEach(letter=>{
+    LETTERS.forEach(letter => {
 
         html += `
-
         <div class="letter-cell">
 
             <div
-                id="box-${letter}"
                 class="number-box"
+                id="box-${letter}"
                 data-letter="${letter}">
-
             </div>
 
-            <span class="letter">${letter}</span>
+            <div class="letter">
+                ${letter}
+            </div>
 
         </div>
-
         `;
 
     });
@@ -43,9 +62,9 @@ function createRecallGrid(){
     html += `
         </div>
 
-        <div class="response-string"
-             id="responseString">
-
+        <div
+            id="responseString"
+            class="response-string">
         </div>
 
         <div class="button-row">
@@ -62,8 +81,9 @@ function createRecallGrid(){
 
             </button>
 
-            <button id="enterBtn"
-                    disabled>
+            <button
+                id="enterBtn"
+                disabled>
 
                 Enter
 
@@ -78,25 +98,27 @@ function createRecallGrid(){
 
 }
 
-function initializeRecallGrid(){
+
+
+// -----------------------------------------------------
+// Initialize after the page loads
+// -----------------------------------------------------
+
+function initializeRecallGrid(callback){
+
+    finishCallback = callback;
 
     recallResponses = [];
 
     LETTERS.forEach(letter=>{
 
-        const box =
-            document.getElementById(`box-${letter}`);
+        document
+            .getElementById(`box-${letter}`)
+            .addEventListener("click",function(){
 
-        box.addEventListener("click",()=>{
+                addLetter(letter);
 
-            if(recallResponses.includes(letter))
-                return;
-
-            recallResponses.push(letter);
-
-            updateRecallGrid();
-
-        });
+            });
 
     });
 
@@ -108,25 +130,64 @@ function initializeRecallGrid(){
         .getElementById("blankBtn")
         .addEventListener("click",blankRecall);
 
+    document
+        .getElementById("enterBtn")
+        .addEventListener("click",submitRecall);
+
 }
+
+
+
+// -----------------------------------------------------
+// Add a letter
+// -----------------------------------------------------
+
+function addLetter(letter){
+
+    if(recallResponses.includes(letter))
+        return;
+
+    recallResponses.push(letter);
+
+    updateDisplay();
+
+}
+
+
+
+// -----------------------------------------------------
+// Blank button
+// -----------------------------------------------------
 
 function blankRecall(){
 
     recallResponses.push("_");
 
-    updateRecallGrid();
+    updateDisplay();
 
 }
+
+
+
+// -----------------------------------------------------
+// Clear button
+// -----------------------------------------------------
 
 function clearRecall(){
 
-    recallResponses=[];
+    recallResponses = [];
 
-    updateRecallGrid();
+    updateDisplay();
 
 }
 
-function updateRecallGrid(){
+
+
+// -----------------------------------------------------
+// Refresh screen
+// -----------------------------------------------------
+
+function updateDisplay(){
 
     LETTERS.forEach(letter=>{
 
@@ -136,15 +197,15 @@ function updateRecallGrid(){
         const index =
             recallResponses.indexOf(letter);
 
-        if(index==-1){
+        if(index === -1){
 
-            box.innerHTML="";
+            box.innerHTML = "";
 
         }
 
         else{
 
-            box.innerHTML=index+1;
+            box.innerHTML = index + 1;
 
         }
 
@@ -152,12 +213,28 @@ function updateRecallGrid(){
 
     document
         .getElementById("responseString")
-        .innerHTML=
-        recallResponses.join("");
+        .innerHTML =
+        recallResponses.join(" ");
 
     document
         .getElementById("enterBtn")
-        .disabled=
-        recallResponses.length===0;
+        .disabled =
+        recallResponses.length === 0;
+
+}
+
+
+
+// -----------------------------------------------------
+// Finish trial
+// -----------------------------------------------------
+
+function submitRecall(){
+
+    if(finishCallback){
+
+        finishCallback([...recallResponses]);
+
+    }
 
 }
