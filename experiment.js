@@ -18,16 +18,6 @@ const jsPsych = initJsPsych({
 const timeline = [];
 
 // =====================================================
-// OSPAN Letters
-// =====================================================
-
-const LETTERS = [
-    "F","H","J","K",
-    "L","N","P","Q",
-    "R","S","T","Y"
-];
-
-// =====================================================
 // Random Sample Without Replacement
 // =====================================================
 
@@ -48,7 +38,27 @@ function sampleLetters(n){
     return pool.slice(0,n);
 
 }
+// =====================================================
+// Score Recall
+// =====================================================
 
+function scoreRecall(presented, recalled){
+
+    let correct = 0;
+
+    for(let i = 0; i < presented.length; i++){
+
+        if(recalled[i] === presented[i]){
+
+            correct++;
+
+        }
+
+    }
+
+    return correct;
+
+}
 // =====================================================
 // Letter Presentation
 // =====================================================
@@ -175,15 +185,20 @@ timeline.push({
 
         initializeRecallGrid(function(responses){
 
-            jsPsych.finishTrial({
+    const score =
+        scoreRecall(practiceLetters, responses);
 
-                presentedLetters: practiceLetters,
+    jsPsych.finishTrial({
 
-                recalledLetters: responses
+        presentedLetters: practiceLetters,
 
-            });
+        recalledLetters: responses,
 
-        });
+        correctLetters: score
+
+    });
+
+});
 
     }
 
@@ -193,19 +208,33 @@ timeline.push({
 // End
 // =====================================================
 
+// =====================================================
+// Feedback
+// =====================================================
+
 timeline.push({
 
     type: jsPsychHtmlButtonResponse,
 
-    stimulus:`
+    stimulus:function(){
 
-        <h2>Success!</h2>
+        const last =
+            jsPsych.data.get().last(1).values()[0];
 
-        <p>Recall complete.</p>
+        return `
 
-    `,
+            <h2>Practice Feedback</h2>
 
-    choices:["Finish"]
+            <p>You recalled <strong>${last.correctLetters}</strong>
+            out of
+            <strong>${last.presentedLetters.length}</strong>
+            letters correctly.</p>
+
+        `;
+
+    },
+
+    choices:["Continue"]
 
 });
 
