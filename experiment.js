@@ -1,6 +1,6 @@
 // =====================================================
 // Automated Shortened OSPAN
-// Version 0.2
+// Version 0.3
 // =====================================================
 
 // Initialize jsPsych
@@ -14,11 +14,63 @@ const jsPsych = initJsPsych({
 
 });
 
-// Timeline
 const timeline = [];
 
 // =====================================================
-// Welcome Screen
+// Helper Function
+// Creates a sequence of letter presentations
+// =====================================================
+
+function createLetterPresentation(letterArray){
+
+    const trials = [];
+
+    letterArray.forEach(letter=>{
+
+        // Letter
+
+        trials.push({
+
+            type: jsPsychHtmlKeyboardResponse,
+
+            stimulus: `
+                <div style="
+                    font-size:72px;
+                    font-family:Arial;
+                    font-weight:bold;
+                ">
+                    ${letter}
+                </div>
+            `,
+
+            choices: "NO_KEYS",
+
+            trial_duration: 800
+
+        });
+
+        // Blank ISI
+
+        trials.push({
+
+            type: jsPsychHtmlKeyboardResponse,
+
+            stimulus: "",
+
+            choices: "NO_KEYS",
+
+            trial_duration: 250
+
+        });
+
+    });
+
+    return trials;
+
+}
+
+// =====================================================
+// Welcome
 // =====================================================
 
 timeline.push({
@@ -26,44 +78,70 @@ timeline.push({
     type: jsPsychHtmlButtonResponse,
 
     stimulus: `
-
         <h1>Automated Shortened OSPAN</h1>
 
-        <p><strong>Version 0.2</strong></p>
-
-        <p>This is the development version of the task.</p>
-
+        <p>Development Version 0.3</p>
     `,
 
-    choices: ["Continue"]
+    choices:["Continue"]
 
 });
 
 // =====================================================
-// Recall Grid Trial
+// Ready Screen
+// =====================================================
+
+timeline.push({
+
+    type: jsPsychHtmlButtonResponse,
+
+    stimulus:`
+
+        <h2>Letter Practice</h2>
+
+        <p>Get ready.</p>
+
+    `,
+
+    choices:["Begin"]
+
+});
+
+// =====================================================
+// Present Letters
+// =====================================================
+
+timeline.push(
+
+    ...createLetterPresentation(["F","P","N"])
+
+);
+
+// =====================================================
+// Recall Grid
 // =====================================================
 
 timeline.push({
 
     type: jsPsychHtmlKeyboardResponse,
 
-    stimulus: function () {
+    stimulus:function(){
 
         return createRecallGrid();
 
     },
 
-    choices: "NO_KEYS",
+    choices:"NO_KEYS",
 
-    trial_duration: null,
+    trial_duration:null,
 
-    on_load: function () {
+    on_load:function(){
 
         initializeRecallGrid(function(responses){
 
             jsPsych.finishTrial({
 
-                recall: responses
+                recall:responses
 
             });
 
@@ -81,20 +159,20 @@ timeline.push({
 
     type: jsPsychHtmlButtonResponse,
 
-    stimulus: `
+    stimulus:`
 
         <h2>Success!</h2>
 
-        <p>The recall grid returned data correctly.</p>
+        <p>Recall complete.</p>
 
     `,
 
-    choices: ["Finish"]
+    choices:["Finish"]
 
 });
 
 // =====================================================
-// Run Experiment
+// Run
 // =====================================================
 
 jsPsych.run(timeline);
