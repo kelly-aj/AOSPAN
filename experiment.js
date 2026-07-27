@@ -315,7 +315,11 @@ function createMathTimeline(problem){
 
     on_load: function(){
 
-    document.addEventListener("click", advanceMathScreen);
+    setTimeout(function(){
+
+        document.addEventListener("click", advanceMathScreen);
+
+    },200);
 
     function advanceMathScreen(){
 
@@ -324,6 +328,8 @@ function createMathTimeline(problem){
         jsPsych.finishTrial();
 
     }
+
+},
 
 },
         },
@@ -370,15 +376,6 @@ function createMathTimeline(problem){
     ];
 
 }
-// =====================================================
-// Letters
-// =====================================================
-
-timeline.push(
-
-    ...createLetterPresentation(practiceLetters)
-
-);
 
 // =====================================================
 // Recall
