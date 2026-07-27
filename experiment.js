@@ -198,16 +198,6 @@ timeline.push({
 });
 
 // =====================================================
-// Math Practice
-// =====================================================
-
-timeline.push(
-
-    ...createMathTimeline(practiceMath)
-
-);
-
-// =====================================================
 // Letter Presentation
 // =====================================================
 
@@ -261,6 +251,16 @@ function createLetterPresentation(letterArray){
 
 const practiceLetters = sampleLetters(3);
 const practiceMath = generateMathProblem();
+
+// =====================================================
+// Math Practice
+// =====================================================
+
+timeline.push(
+
+    ...createMathTimeline(practiceMath)
+
+);
 
 // =====================================================
 // Create One Math Trial
