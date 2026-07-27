@@ -59,6 +59,136 @@ function scoreRecall(presented, recalled){
     return correct;
 
 }
+
+// =====================================================
+// Random Integer
+// =====================================================
+
+function randInt(min, max){
+
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+
+}
+
+// =====================================================
+// Generate One Math Problem
+// =====================================================
+
+function generateMathProblem(){
+
+    while(true){
+
+        const a = randInt(1,5);
+        const b = randInt(1,5);
+
+        const useMultiply = Math.random() < 0.5;
+
+        let leftValue;
+        let leftText;
+
+        if(useMultiply){
+
+            leftValue = a * b;
+            leftText = `(${a} × ${b})`;
+
+        }else{
+
+            leftValue = Math.floor(a * b / b);
+            leftText = `(${a*b} ÷ ${b})`;
+
+        }
+
+        const c = randInt(1,5);
+
+        const add = Math.random() < 0.5;
+
+        let correctAnswer;
+
+        if(add){
+
+            correctAnswer = leftValue + c;
+
+        }else{
+
+            correctAnswer = leftValue - c;
+
+        }
+
+        if(correctAnswer < 0 || correctAnswer > 15)
+            continue;
+
+        const isTrue = Math.random() < 0.5;
+
+        let displayedAnswer;
+
+        if(isTrue){
+
+            displayedAnswer = correctAnswer;
+
+        }else{
+
+            do{
+
+                displayedAnswer =
+                    correctAnswer + randInt(-2,2);
+
+            }while(
+                displayedAnswer === correctAnswer ||
+                displayedAnswer < 0 ||
+                displayedAnswer > 15
+            );
+
+        }
+
+        return{
+
+            equation:
+                `${leftText} ${add ? "+" : "-"} ${c} = ${displayedAnswer}`,
+
+            correctAnswer:correctAnswer,
+
+            displayedAnswer:displayedAnswer,
+
+            isTrue:isTrue
+
+        };
+
+    }
+
+}
+
+// =====================================================
+// Math Practice
+// =====================================================
+
+timeline.push({
+
+    type: jsPsychHtmlButtonResponse,
+
+    stimulus:function(){
+
+        return `
+
+            <div style="font-size:48px;
+                        font-family:Arial;
+                        text-align:center;">
+
+                ${practiceMath.equation}
+
+            </div>
+
+            <br><br>
+
+            <p>Work the problem, then press Continue.</p>
+
+        `;
+
+    },
+
+    choices:["Continue"]
+
+});
+
 // =====================================================
 // Letter Presentation
 // =====================================================
@@ -112,6 +242,7 @@ function createLetterPresentation(letterArray){
 // =====================================================
 
 const practiceLetters = sampleLetters(3);
+const practiceMath = generateMathProblem();
 
 // =====================================================
 // Welcome
