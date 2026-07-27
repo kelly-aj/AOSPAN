@@ -250,17 +250,33 @@ function createLetterPresentation(letterArray){
 // =====================================================
 
 const practiceLetters = sampleLetters(3);
-const practiceMath = generateMathProblem();
+const practiceMath = [];
+
+for(let i=0;i<3;i++){
+
+    practiceMath.push(generateMathProblem());
+
+}
 
 // =====================================================
 // Math Practice
 // =====================================================
 
-timeline.push(
+for(let i=0;i<practiceLetters.length;i++){
 
-    ...createMathTimeline(practiceMath)
+    timeline.push(
 
-);
+        ...createMathTimeline(practiceMath[i])
+
+    );
+
+    timeline.push(
+
+        ...createLetterPresentation([practiceLetters[i]])
+
+    );
+
+}
 
 // =====================================================
 // Create One Math Trial
@@ -294,8 +310,22 @@ function createMathTimeline(problem){
 
             `,
 
-            choices:"ALL_KEYS"
+            choices: "NO_KEYS",
+            response_ends_trial: false,
 
+    on_load: function(){
+
+    document.addEventListener("click", advanceMathScreen);
+
+    function advanceMathScreen(){
+
+        document.removeEventListener("click", advanceMathScreen);
+
+        jsPsych.finishTrial();
+
+    }
+
+},
         },
 
         // True / False Screen
