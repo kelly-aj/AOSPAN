@@ -201,33 +201,11 @@ timeline.push({
 // Math Practice
 // =====================================================
 
-timeline.push({
+timeline.push(
 
-    type: jsPsychHtmlButtonResponse,
+    ...createMathTimeline(practiceMath)
 
-    stimulus:function(){
-
-        return `
-
-            <div style="font-size:48px;
-                        font-family:Arial;
-                        text-align:center;">
-
-                ${practiceMath.equation}
-
-            </div>
-
-            <br><br>
-
-            <p>Work the problem, then press Continue.</p>
-
-        `;
-
-    },
-
-    choices:["Continue"]
-
-});
+);
 
 // =====================================================
 // Letter Presentation
@@ -284,7 +262,84 @@ function createLetterPresentation(letterArray){
 const practiceLetters = sampleLetters(3);
 const practiceMath = generateMathProblem();
 
+// =====================================================
+// Create One Math Trial
+// =====================================================
 
+function createMathTimeline(problem){
+
+    return [
+
+        // Equation
+
+        {
+
+            type: jsPsychHtmlKeyboardResponse,
+
+            stimulus:`
+
+                <div style="
+                    font-size:48px;
+                    font-family:Arial;
+                    text-align:center;
+                ">
+
+                    ${problem.equation.replace(/=.+/, "= ?")}
+
+                </div>
+
+                <br><br>
+
+                <p>Work the problem, then click the mouse.</p>
+
+            `,
+
+            choices:"ALL_KEYS"
+
+        },
+
+        // True / False Screen
+
+        {
+
+            type: jsPsychHtmlButtonResponse,
+
+            stimulus:`
+
+                <div style="
+                    font-size:48px;
+                    font-family:Arial;
+                ">
+
+                    ${problem.displayedAnswer}
+
+                </div>
+
+            `,
+
+            choices:["True","False"],
+
+            data:{
+
+                correct:problem.isTrue
+
+            },
+
+            on_finish:function(data){
+
+                data.correctMath =
+
+                    (data.response===0 && problem.isTrue) ||
+
+                    (data.response===1 && !problem.isTrue);
+
+            }
+
+        }
+
+    ];
+
+}
 // =====================================================
 // Letters
 // =====================================================
