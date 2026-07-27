@@ -1,76 +1,113 @@
-/* ======================================================
+/* =====================================================
    Automated Shortened OSPAN
-   Version 0.2
-   ====================================================== */
+   Version 1.0
+===================================================== */
 
 body{
-    font-family: Arial, Helvetica, sans-serif;
+
+    margin:0;
+
+    padding:0;
+
     background:white;
-}
 
-.jspsych-content{
-    max-width:900px;
-}
-
-.recall-panel{
-
-    width:700px;
-
-    margin:auto;
-
-    padding:25px;
-
-    border:2px solid black;
+    font-family:Arial, Helvetica, sans-serif;
 
     text-align:center;
 
-    background:white;
+}
+
+h1{
+
+    font-size:42px;
+
+    margin-top:60px;
+
+}
+
+h2{
+
+    font-size:34px;
+
+    margin-top:40px;
+
+}
+
+p{
+
+    font-size:24px;
+
+    line-height:1.5;
+
+}
+
+button{
+
+    font-size:22px;
+
+    padding:12px 28px;
+
+    margin:10px;
+
+    cursor:pointer;
+
+}
+
+/* =====================================================
+   Recall Panel
+===================================================== */
+
+.recall-panel{
+
+    width:900px;
+
+    margin:30px auto;
 
 }
 
 .instructions{
 
-    font-size:20px;
+    font-size:22px;
 
-    margin-bottom:25px;
+    margin-bottom:30px;
 
 }
+
+/* =====================================================
+   Letter Grid
+===================================================== */
 
 .letter-grid{
 
     display:grid;
 
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:repeat(4,150px);
 
-    gap:18px;
+    grid-row-gap:35px;
 
-    width:500px;
+    justify-content:center;
 
-    margin:auto;
+    margin-bottom:35px;
 
 }
 
 .letter-cell{
 
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
+    text-align:center;
 
 }
 
 .number-box{
 
-    width:48px;
+    width:60px;
 
-    height:48px;
+    height:60px;
 
     border:2px solid black;
 
-    margin-bottom:8px;
+    margin:0 auto 10px auto;
 
-    font-size:22px;
+    font-size:28px;
 
     font-weight:bold;
 
@@ -88,58 +125,126 @@ body{
 
 .number-box:hover{
 
-    background:#efefef;
+    background:#f0f0f0;
 
 }
 
 .letter{
 
-    font-size:26px;
+    font-size:30px;
 
     font-weight:bold;
 
 }
 
+/* =====================================================
+   Recall Response
+===================================================== */
+
 .response-string{
 
-    height:35px;
+    min-height:40px;
 
-    margin-top:25px;
+    font-size:30px;
 
-    margin-bottom:20px;
+    letter-spacing:10px;
 
-    font-size:24px;
+    margin-top:15px;
 
-    letter-spacing:4px;
+    margin-bottom:25px;
 
 }
+
+/* =====================================================
+   Buttons
+===================================================== */
 
 .button-row{
 
     display:flex;
 
-    justify-content:space-between;
+    justify-content:center;
 
-    margin-top:20px;
-
-}
-
-.button-row button{
-
-    font-size:18px;
-
-    padding:10px 30px;
+    gap:20px;
 
 }
 
-#blankBtn{
+#clearBtn,
+#blankBtn,
+#enterBtn{
 
-    margin:auto;
+    min-width:140px;
+
+    font-size:22px;
+
+    padding:12px;
 
 }
 
 #enterBtn:disabled{
 
-    opacity:.5;
+    opacity:.45;
+
+    cursor:not-allowed;
+
+}
+
+/* =====================================================
+   Letter Presentation
+===================================================== */
+
+.letterStimulus{
+
+    font-size:72px;
+
+    font-family:Arial;
+
+    font-weight:bold;
+
+    margin-top:220px;
+
+}
+
+/* =====================================================
+   Math Screen
+===================================================== */
+
+.mathEquation{
+
+    font-size:48px;
+
+    font-family:Arial;
+
+    margin-top:180px;
+
+}
+
+.mathAnswer{
+
+    font-size:56px;
+
+    font-family:Arial;
+
+    margin-top:180px;
+
+}
+
+.mathPrompt{
+
+    font-size:24px;
+
+    margin-top:40px;
+
+}
+
+/* =====================================================
+   Feedback
+===================================================== */
+
+.feedback{
+
+    margin-top:120px;
+
+    font-size:30px;
 
 }
