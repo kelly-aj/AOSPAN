@@ -273,214 +273,173 @@ function createOSPANTrial(setSize){
 
 }
 
-const practiceTrial=createOSPANTrial(3);
+// =====================================================
+// Combined Practice Trials
+// =====================================================
+
+const practiceTrials = [
+
+    createOSPANTrial(2),
+
+    createOSPANTrial(2),
+
+    createOSPANTrial(2)
+
+];
 
 // =====================================================
 // Math Practice
 // =====================================================
 
-for(let i=0;i<practiceTrial.letters.length;i++){
-
-    timeline.push(
-
-        ...createMathTimeline(
-
-            practiceTrial.math[i]
-
-        )
-
-    );
-
-    timeline.push(
-
-        ...createLetterPresentation([
-
-            practiceTrial.letters[i]
-
-        ])
-
-    );
-
-}
-
 // =====================================================
-// Create One Math Trial
+// Combined Practice Block
 // =====================================================
 
-function createMathTimeline(problem){
+practiceTrials.forEach(function(practiceTrial, trialIndex){
 
-    return [
+    // -------------------------------
+    // Ready Screen
+    // -------------------------------
 
-        // Equation
+    timeline.push({
 
-        {
+        type: jsPsychHtmlButtonResponse,
 
-            type: jsPsychHtmlKeyboardResponse,
+        stimulus:`
 
-            stimulus:`
+            <h2>Combined Practice</h2>
 
-                <div style="
-                    font-size:48px;
-                    font-family:Arial;
-                    text-align:center;
-                ">
+            <p>Practice Trial ${trialIndex+1} of ${practiceTrials.length}</p>
 
-                    ${problem.equation.replace(/=.+/, "= ?")}
+            <p>Press Begin when you are ready.</p>
 
-                </div>
+        `,
 
-                <br><br>
-
-                <p>Work the problem, then click the mouse.</p>
-
-            `,
-
-            choices: "NO_KEYS",
-            response_ends_trial: false,
-
-    on_load: function(){
-
-    setTimeout(function(){
-
-        document.addEventListener("click", advanceMathScreen);
-
-    },200);
-
-    function advanceMathScreen(){
-
-        document.removeEventListener("click", advanceMathScreen);
-
-        jsPsych.finishTrial();
-
-    }
-
-},
-
-},
-
-        // True / False Screen
-
-        {
-
-            type: jsPsychHtmlButtonResponse,
-
-            stimulus:`
-
-                <div style="
-                    font-size:48px;
-                    font-family:Arial;
-                ">
-
-                    ${problem.displayedAnswer}
-
-                </div>
-
-            `,
-
-            choices:["True","False"],
-
-            data:{
-
-                correct:problem.isTrue
-
-            },
-
-            on_finish:function(data){
-
-                data.correctMath =
-
-                    (data.response===0 && problem.isTrue) ||
-
-                    (data.response===1 && !problem.isTrue);
-
-            }
-
-        }
-
-    ];
-
-}
-
-// =====================================================
-// Recall
-// =====================================================
-
-timeline.push({
-
-    type: jsPsychHtmlKeyboardResponse,
-
-    stimulus:function(){
-
-        return createRecallGrid();
-
-    },
-
-    choices:"NO_KEYS",
-
-    trial_duration:null,
-
-    on_load:function(){
-
-        initializeRecallGrid(function(responses){
-
-    const score =
-    scoreRecall(
-
-        practiceTrial.letters,
-
-        responses
-
-    );
-
-    jsPsych.finishTrial({
-
-        presentedLetters:
-
-            practiceTrial.letters,
-
-        recalledLetters: responses,
-
-        correctLetters: score
+        choices:["Begin"]
 
     });
 
-});
+    // -------------------------------
+    // Math + Letter Sequence
+    // -------------------------------
+
+    for(let i=0;i<practiceTrial.letters.length;i++){
+
+        timeline.push(
+
+            ...createMathTimeline(
+
+                practiceTrial.math[i]
+
+            )
+
+        );
+
+        timeline.push(
+
+            ...createLetterPresentation([
+
+                practiceTrial.letters[i]
+
+            ])
+
+        );
 
     }
 
-});
+    // -------------------------------
+    // Recall
+    // -------------------------------
 
-// =====================================================
-// End
-// =====================================================
+    timeline.push({
 
-// =====================================================
-// Feedback
-// =====================================================
+        type: jsPsychHtmlKeyboardResponse,
 
-timeline.push({
+        stimulus:function(){
 
-    type: jsPsychHtmlButtonResponse,
+            return createRecallGrid();
 
-    stimulus:function(){
+        },
 
-        const last =
-            jsPsych.data.get().last(1).values()[0];
+        choices:"NO_KEYS",
 
-        return `
+        trial_duration:null,
 
-            <h2>Practice Feedback</h2>
+        on_load:function(){
 
-            <p>You recalled <strong>${last.correctLetters}</strong>
-            out of
-            <strong>${last.presentedLetters.length}</strong>
-            letters correctly.</p>
+            initializeRecallGrid(function(responses){
 
-        `;
+                const score=
 
-    },
+                    scoreRecall(
 
-    choices:["Continue"]
+                        practiceTrial.letters,
+
+                        responses
+
+                    );
+
+                jsPsych.finishTrial({
+
+                    presentedLetters:
+
+                        practiceTrial.letters,
+
+                    recalledLetters:
+
+                        responses,
+
+                    correctLetters:
+
+                        score
+
+                });
+
+            });
+
+        }
+
+    });
+
+    // -------------------------------
+    // Feedback
+    // -------------------------------
+
+    timeline.push({
+
+        type: jsPsychHtmlButtonResponse,
+
+        stimulus:function(){
+
+            const last=
+
+                jsPsych.data.get().last(1).values()[0];
+
+            return `
+
+                <h2>Practice Feedback</h2>
+
+                <p>
+
+                You recalled
+
+                <strong>${last.correctLetters}</strong>
+
+                out of
+
+                <strong>${last.presentedLetters.length}</strong>
+
+                letters correctly.
+
+                </p>
+
+            `;
+
+        },
+
+        choices:["Continue"]
+
+    });
 
 });
 
