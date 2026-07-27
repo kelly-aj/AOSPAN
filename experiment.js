@@ -158,6 +158,46 @@ function generateMathProblem(){
 }
 
 // =====================================================
+// Welcome
+// =====================================================
+
+timeline.push({
+
+    type: jsPsychHtmlButtonResponse,
+
+    stimulus:`
+
+        <h1>Automated Shortened OSPAN</h1>
+
+        <p>Development Version 0.4</p>
+
+    `,
+
+    choices:["Continue"]
+
+});
+
+// =====================================================
+// Ready
+// =====================================================
+
+timeline.push({
+
+    type: jsPsychHtmlButtonResponse,
+
+    stimulus:`
+
+        <h2>Letter Practice</h2>
+
+        <p>Get ready.</p>
+
+    `,
+
+    choices:["Begin"]
+
+});
+
+// =====================================================
 // Math Practice
 // =====================================================
 
@@ -244,45 +284,6 @@ function createLetterPresentation(letterArray){
 const practiceLetters = sampleLetters(3);
 const practiceMath = generateMathProblem();
 
-// =====================================================
-// Welcome
-// =====================================================
-
-timeline.push({
-
-    type: jsPsychHtmlButtonResponse,
-
-    stimulus:`
-
-        <h1>Automated Shortened OSPAN</h1>
-
-        <p>Development Version 0.4</p>
-
-    `,
-
-    choices:["Continue"]
-
-});
-
-// =====================================================
-// Ready
-// =====================================================
-
-timeline.push({
-
-    type: jsPsychHtmlButtonResponse,
-
-    stimulus:`
-
-        <h2>Letter Practice</h2>
-
-        <p>Get ready.</p>
-
-    `,
-
-    choices:["Begin"]
-
-});
 
 // =====================================================
 // Letters
