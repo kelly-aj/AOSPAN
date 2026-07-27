@@ -249,30 +249,55 @@ function createLetterPresentation(letterArray){
 // Generate One Random Practice Trial
 // =====================================================
 
-const practiceLetters = sampleLetters(3);
-const practiceMath = [];
+// =====================================================
+// Build One Complete OSPAN Trial
+// =====================================================
 
-for(let i=0;i<3;i++){
+function createOSPANTrial(setSize){
 
-    practiceMath.push(generateMathProblem());
+    const trial={
+
+        letters:sampleLetters(setSize),
+
+        math:[]
+
+    };
+
+    for(let i=0;i<setSize;i++){
+
+        trial.math.push(generateMathProblem());
+
+    }
+
+    return trial;
 
 }
+
+const practiceTrial=createOSPANTrial(3);
 
 // =====================================================
 // Math Practice
 // =====================================================
 
-for(let i=0;i<practiceLetters.length;i++){
+for(let i=0;i<practiceTrial.letters.length;i++){
 
     timeline.push(
 
-        ...createMathTimeline(practiceMath[i])
+        ...createMathTimeline(
+
+            practiceTrial.math[i]
+
+        )
 
     );
 
     timeline.push(
 
-        ...createLetterPresentation([practiceLetters[i]])
+        ...createLetterPresentation([
+
+            practiceTrial.letters[i]
+
+        ])
 
     );
 
@@ -332,7 +357,6 @@ function createMathTimeline(problem){
 },
 
 },
-        },
 
         // True / False Screen
 
@@ -400,11 +424,19 @@ timeline.push({
         initializeRecallGrid(function(responses){
 
     const score =
-        scoreRecall(practiceLetters, responses);
+    scoreRecall(
+
+        practiceTrial.letters,
+
+        responses
+
+    );
 
     jsPsych.finishTrial({
 
-        presentedLetters: practiceLetters,
+        presentedLetters:
+
+            practiceTrial.letters,
 
         recalledLetters: responses,
 
