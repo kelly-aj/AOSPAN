@@ -1,3 +1,5 @@
+console.log("experiment.js loaded");
+
 // =====================================================
 // Automated Shortened OSPAN
 // Version 1.0
