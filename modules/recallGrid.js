@@ -1,91 +1,70 @@
 // =====================================================
 // Automated Shortened OSPAN
 // Recall Grid Module
-// Version 1.0
+// Version 0.2
 // =====================================================
 
-// -----------------------------------------------------
-// Constants
-// -----------------------------------------------------
-
+// Letters in the original Foster et al. grid
 const LETTERS = [
-
     "F","H","J","K",
     "L","N","P","Q",
     "R","S","T","Y"
-
 ];
 
-// -----------------------------------------------------
-// Global Recall State
-// -----------------------------------------------------
-
+// Stores the participant's responses
 let recallResponses = [];
 
-let recallCallback = null;
+// Function to call when Enter is pressed
+let finishCallback = null;
+
 
 // -----------------------------------------------------
-// Build Recall Grid
+// Build the HTML
 // -----------------------------------------------------
 
-function createRecallGrid(){
+function createRecallGrid() {
 
     let html = "";
 
     html += `
-
     <div class="recall-panel">
 
         <h2>Recall</h2>
 
         <p class="instructions">
-
-            Select the letters in the order they appeared.
-
+            Select the letters in the order they were presented.
+            If you forgot a letter, press Blank.
         </p>
 
         <div class="letter-grid">
-
     `;
 
-    LETTERS.forEach(letter=>{
+    LETTERS.forEach(letter => {
 
         html += `
+        <div class="letter-cell">
 
-            <div class="letter-cell">
-
-                <div
-
-                    class="number-box"
-
-                    id="box-${letter}"
-
-                    data-letter="${letter}"
-
-                ></div>
-
-                <div class="letter">
-
-                    ${letter}
-
-                </div>
-
+            <div
+                class="number-box"
+                id="box-${letter}"
+                data-letter="${letter}">
             </div>
 
+            <div class="letter">
+                ${letter}
+            </div>
+
+        </div>
         `;
 
     });
 
     html += `
-
         </div>
 
         <div
-
-            class="response-string"
-
-            id="responseString">
-
+            id="responseString"
+            class="response-string">
         </div>
 
         <div class="button-row">
@@ -103,9 +82,7 @@ function createRecallGrid(){
             </button>
 
             <button
-
                 id="enterBtn"
-
                 disabled>
 
                 Enter
@@ -115,139 +92,109 @@ function createRecallGrid(){
         </div>
 
     </div>
-
     `;
 
     return html;
 
 }
 
+
+
 // -----------------------------------------------------
-// Initialize Recall Grid
+// Initialize after the page loads
 // -----------------------------------------------------
 
 function initializeRecallGrid(callback){
 
-    recallResponses = [];
+    finishCallback = callback;
 
-    recallCallback = callback;
+    recallResponses = [];
 
     LETTERS.forEach(letter=>{
 
         document
-
             .getElementById(`box-${letter}`)
+            .addEventListener("click",function(){
 
-            .addEventListener(
+                addLetter(letter);
 
-                "click",
-
-                function(){
-
-                    selectLetter(letter);
-
-                }
-
-            );
+            });
 
     });
 
     document
-
         .getElementById("clearBtn")
-
-        .addEventListener(
-
-            "click",
-
-            clearRecall
-
-        );
+        .addEventListener("click",clearRecall);
 
     document
-
         .getElementById("blankBtn")
-
-        .addEventListener(
-
-            "click",
-
-            blankRecall
-
-        );
+        .addEventListener("click",blankRecall);
 
     document
-
         .getElementById("enterBtn")
-
-        .addEventListener(
-
-            "click",
-
-            finishRecall
-
-        );
+        .addEventListener("click",submitRecall);
 
 }
 
+
+
 // -----------------------------------------------------
-// Select Letter
+// Add a letter
 // -----------------------------------------------------
 
-function selectLetter(letter){
+function addLetter(letter){
 
     if(recallResponses.includes(letter))
-
         return;
 
     recallResponses.push(letter);
 
-    updateRecallDisplay();
+    updateDisplay();
 
 }
 
+
+
 // -----------------------------------------------------
-// Blank
+// Blank button
 // -----------------------------------------------------
 
 function blankRecall(){
 
     recallResponses.push("_");
 
-    updateRecallDisplay();
+    updateDisplay();
 
 }
 
+
+
 // -----------------------------------------------------
-// Clear
+// Clear button
 // -----------------------------------------------------
 
 function clearRecall(){
 
     recallResponses = [];
 
-    updateRecallDisplay();
+    updateDisplay();
 
 }
 
+
+
 // -----------------------------------------------------
-// Update Display
+// Refresh screen
 // -----------------------------------------------------
 
-function updateRecallDisplay(){
+function updateDisplay(){
 
     LETTERS.forEach(letter=>{
 
         const box =
-
-            document.getElementById(
-
-                `box-${letter}`
-
-            );
+            document.getElementById(`box-${letter}`);
 
         const index =
-
             recallResponses.indexOf(letter);
 
         if(index === -1){
@@ -265,36 +212,28 @@ function updateRecallDisplay(){
     });
 
     document
-
         .getElementById("responseString")
-
         .innerHTML =
-
         recallResponses.join(" ");
 
     document
-
         .getElementById("enterBtn")
-
         .disabled =
-
         recallResponses.length === 0;
 
 }
 
+
+
 // -----------------------------------------------------
-// Finish Recall
+// Finish trial
 // -----------------------------------------------------
 
-function finishRecall(){
+function submitRecall(){
 
-    if(recallCallback){
+    if(finishCallback){
 
-        recallCallback(
-
-            [...recallResponses]
-
-        );
+        finishCallback([...recallResponses]);
 
     }
 

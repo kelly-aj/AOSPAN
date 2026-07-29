@@ -1,113 +1,76 @@
-/* =====================================================
+/* ======================================================
    Automated Shortened OSPAN
-   Version 1.0
-===================================================== */
+   Version 0.2
+   ====================================================== */
 
 body{
-
-    margin:0;
-
-    padding:0;
-
+    font-family: Arial, Helvetica, sans-serif;
     background:white;
-
-    font-family:Arial, Helvetica, sans-serif;
-
-    text-align:center;
-
 }
 
-h1{
-
-    font-size:42px;
-
-    margin-top:60px;
-
+.jspsych-content{
+    max-width:900px;
 }
-
-h2{
-
-    font-size:34px;
-
-    margin-top:40px;
-
-}
-
-p{
-
-    font-size:24px;
-
-    line-height:1.5;
-
-}
-
-button{
-
-    font-size:22px;
-
-    padding:12px 28px;
-
-    margin:10px;
-
-    cursor:pointer;
-
-}
-
-/* =====================================================
-   Recall Panel
-===================================================== */
 
 .recall-panel{
 
-    width:900px;
+    width:700px;
 
-    margin:30px auto;
+    margin:auto;
+
+    padding:25px;
+
+    border:2px solid black;
+
+    text-align:center;
+
+    background:white;
 
 }
 
 .instructions{
 
-    font-size:22px;
+    font-size:20px;
 
-    margin-bottom:30px;
+    margin-bottom:25px;
 
 }
-
-/* =====================================================
-   Letter Grid
-===================================================== */
 
 .letter-grid{
 
     display:grid;
 
-    grid-template-columns:repeat(4,150px);
+    grid-template-columns:repeat(4,1fr);
 
-    grid-row-gap:35px;
+    gap:18px;
 
-    justify-content:center;
+    width:500px;
 
-    margin-bottom:35px;
+    margin:auto;
 
 }
 
 .letter-cell{
 
-    text-align:center;
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
 
 }
 
 .number-box{
 
-    width:60px;
+    width:48px;
 
-    height:60px;
+    height:48px;
 
     border:2px solid black;
 
-    margin:0 auto 10px auto;
+    margin-bottom:8px;
 
-    font-size:28px;
+    font-size:22px;
 
     font-weight:bold;
 
@@ -125,126 +88,58 @@ button{
 
 .number-box:hover{
 
-    background:#f0f0f0;
+    background:#efefef;
 
 }
 
 .letter{
 
-    font-size:30px;
+    font-size:26px;
 
     font-weight:bold;
 
 }
 
-/* =====================================================
-   Recall Response
-===================================================== */
-
 .response-string{
 
-    min-height:40px;
+    height:35px;
 
-    font-size:30px;
+    margin-top:25px;
 
-    letter-spacing:10px;
+    margin-bottom:20px;
 
-    margin-top:15px;
+    font-size:24px;
 
-    margin-bottom:25px;
+    letter-spacing:4px;
 
 }
-
-/* =====================================================
-   Buttons
-===================================================== */
 
 .button-row{
 
     display:flex;
 
-    justify-content:center;
+    justify-content:space-between;
 
-    gap:20px;
+    margin-top:20px;
 
 }
 
-#clearBtn,
-#blankBtn,
-#enterBtn{
+.button-row button{
 
-    min-width:140px;
+    font-size:18px;
 
-    font-size:22px;
+    padding:10px 30px;
 
-    padding:12px;
+}
+
+#blankBtn{
+
+    margin:auto;
 
 }
 
 #enterBtn:disabled{
 
-    opacity:.45;
-
-    cursor:not-allowed;
-
-}
-
-/* =====================================================
-   Letter Presentation
-===================================================== */
-
-.letterStimulus{
-
-    font-size:72px;
-
-    font-family:Arial;
-
-    font-weight:bold;
-
-    margin-top:220px;
-
-}
-
-/* =====================================================
-   Math Screen
-===================================================== */
-
-.mathEquation{
-
-    font-size:48px;
-
-    font-family:Arial;
-
-    margin-top:180px;
-
-}
-
-.mathAnswer{
-
-    font-size:56px;
-
-    font-family:Arial;
-
-    margin-top:180px;
-
-}
-
-.mathPrompt{
-
-    font-size:24px;
-
-    margin-top:40px;
-
-}
-
-/* =====================================================
-   Feedback
-===================================================== */
-
-.feedback{
-
-    margin-top:120px;
-
-    font-size:30px;
+    opacity:.5;
 
 }
