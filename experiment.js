@@ -1,3 +1,5 @@
+console.log("experiment.js loaded");
+
 // =====================================================
 // Automated Shortened OSPAN
 // Version 0.4
@@ -272,6 +274,7 @@ function createOSPANTrial(setSize){
     return trial;
 
 }
+<<<<<<< HEAD
 
 const practiceTrial=createOSPANTrial(3);
 
@@ -489,3 +492,5 @@ timeline.push({
 // =====================================================
 
 jsPsych.run(timeline);
+=======
+>>>>>>> 1b4e1aade3be69ff0a5cd7f2ff8b50f3964cf981
