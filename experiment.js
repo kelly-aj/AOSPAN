@@ -8,13 +8,9 @@ console.log("experiment.js loaded");
 
 // Initialize jsPsych
 const jsPsych = initJsPsych({
-
     on_finish: function () {
-
         console.log(jsPsych.data.get().csv());
-
     }
-
 });
 
 const timeline = [];
@@ -24,42 +20,29 @@ const timeline = [];
 // =====================================================
 
 function sampleLetters(n){
-
     let pool = [...LETTERS];
 
     // Fisher-Yates shuffle
-
     for(let i = pool.length - 1; i > 0; i--){
-
         const j = Math.floor(Math.random() * (i + 1));
-
         [pool[i], pool[j]] = [pool[j], pool[i]];
-
     }
 
     return pool.slice(0,n);
-
 }
+
 // =====================================================
 // Score Recall
 // =====================================================
 
 function scoreRecall(presented, recalled){
-
     let correct = 0;
-
     for(let i = 0; i < presented.length; i++){
-
         if(recalled[i] === presented[i]){
-
             correct++;
-
         }
-
     }
-
     return correct;
-
 }
 
 // =====================================================
@@ -67,9 +50,7 @@ function scoreRecall(presented, recalled){
 // =====================================================
 
 function randInt(min, max){
-
     return Math.floor(Math.random() * (max - min + 1)) + min;
-
 }
 
 // =====================================================
@@ -77,43 +58,30 @@ function randInt(min, max){
 // =====================================================
 
 function generateMathProblem(){
-
     while(true){
-
         const a = randInt(1,5);
         const b = randInt(1,5);
-
         const useMultiply = Math.random() < 0.5;
 
         let leftValue;
         let leftText;
 
         if(useMultiply){
-
             leftValue = a * b;
             leftText = `(${a} × ${b})`;
-
         }else{
-
             leftValue = Math.floor(a * b / b);
             leftText = `(${a*b} ÷ ${b})`;
-
         }
 
         const c = randInt(1,5);
-
         const add = Math.random() < 0.5;
 
         let correctAnswer;
-
         if(add){
-
             correctAnswer = leftValue + c;
-
         }else{
-
             correctAnswer = leftValue - c;
-
         }
 
         if(correctAnswer < 0 || correctAnswer > 15)
@@ -122,41 +90,25 @@ function generateMathProblem(){
         const isTrue = Math.random() < 0.5;
 
         let displayedAnswer;
-
         if(isTrue){
-
             displayedAnswer = correctAnswer;
-
         }else{
-
             do{
-
-                displayedAnswer =
-                    correctAnswer + randInt(-2,2);
-
+                displayedAnswer = correctAnswer + randInt(-2,2);
             }while(
                 displayedAnswer === correctAnswer ||
                 displayedAnswer < 0 ||
                 displayedAnswer > 15
             );
-
         }
 
         return{
-
-            equation:
-                `${leftText} ${add ? "+" : "-"} ${c} = ${displayedAnswer}`,
-
-            correctAnswer:correctAnswer,
-
-            displayedAnswer:displayedAnswer,
-
-            isTrue:isTrue
-
+            equation: `${leftText} ${add ? "+" : "-"} ${c} = ${displayedAnswer}`,
+            correctAnswer: correctAnswer,
+            displayedAnswer: displayedAnswer,
+            isTrue: isTrue
         };
-
     }
-
 }
 
 // =====================================================
@@ -164,19 +116,12 @@ function generateMathProblem(){
 // =====================================================
 
 timeline.push({
-
-    type: jsPsychHtmlButtonResponse,
-
-    stimulus:`
-
+    type: 'html-button-response',
+    stimulus: `
         <h1>Automated Shortened OSPAN</h1>
-
         <p>Development Version 0.4</p>
-
     `,
-
     choices:["Continue"]
-
 });
 
 // =====================================================
@@ -184,19 +129,12 @@ timeline.push({
 // =====================================================
 
 timeline.push({
-
-    type: jsPsychHtmlButtonResponse,
-
-    stimulus:`
-
+    type: 'html-button-response',
+    stimulus: `
         <h2>Letter Practice</h2>
-
         <p>Get ready.</p>
-
     `,
-
     choices:["Begin"]
-
 });
 
 // =====================================================
@@ -204,16 +142,12 @@ timeline.push({
 // =====================================================
 
 function createLetterPresentation(letterArray){
-
     const trials = [];
 
     letterArray.forEach(letter=>{
-
         trials.push({
-
-            type: jsPsychHtmlKeyboardResponse,
-
-            stimulus:`
+            type: 'html-keyboard-response',
+            stimulus: `
                 <div style="
                     font-size:72px;
                     font-family:Arial;
@@ -222,88 +156,52 @@ function createLetterPresentation(letterArray){
                     ${letter}
                 </div>
             `,
-
-            choices:"NO_KEYS",
-
+            choices: jsPsych.NO_KEYS,
             trial_duration:800
-
         });
 
         trials.push({
-
-            type: jsPsychHtmlKeyboardResponse,
-
+            type: 'html-keyboard-response',
             stimulus:"",
-
-            choices:"NO_KEYS",
-
+            choices: jsPsych.NO_KEYS,
             trial_duration:250
-
         });
-
     });
 
     return trials;
-
 }
-
-// =====================================================
-// Generate One Random Practice Trial
-// =====================================================
 
 // =====================================================
 // Build One Complete OSPAN Trial
 // =====================================================
 
 function createOSPANTrial(setSize){
-
-    const trial={
-
-        letters:sampleLetters(setSize),
-
-        math:[]
-
+    const trial = {
+        letters: sampleLetters(setSize),
+        math: []
     };
 
     for(let i=0;i<setSize;i++){
-
         trial.math.push(generateMathProblem());
-
     }
 
     return trial;
-
 }
-<<<<<<< HEAD
 
-const practiceTrial=createOSPANTrial(3);
+const practiceTrial = createOSPANTrial(3);
 
 // =====================================================
 // Math Practice
 // =====================================================
 
 for(let i=0;i<practiceTrial.letters.length;i++){
-
     timeline.push(
-
-        ...createMathTimeline(
-
-            practiceTrial.math[i]
-
-        )
-
+        ...createMathTimeline(practiceTrial.math[i])
     );
 
     timeline.push(
-
-        ...createLetterPresentation([
-
-            practiceTrial.letters[i]
-
-        ])
-
+        ...createLetterPresentation([ practiceTrial.letters[i] ])
     );
-
 }
 
 // =====================================================
@@ -311,97 +209,57 @@ for(let i=0;i<practiceTrial.letters.length;i++){
 // =====================================================
 
 function createMathTimeline(problem){
-
     return [
-
         // Equation
-
         {
-
-            type: jsPsychHtmlKeyboardResponse,
-
-            stimulus:`
-
+            type: 'html-keyboard-response',
+            stimulus: `
                 <div style="
                     font-size:48px;
                     font-family:Arial;
                     text-align:center;
                 ">
-
                     ${problem.equation.replace(/=.+/, "= ?")}
-
                 </div>
-
                 <br><br>
-
                 <p>Work the problem, then click the mouse.</p>
-
             `,
-
-            choices: "NO_KEYS",
+            choices: jsPsych.NO_KEYS,
             response_ends_trial: false,
+            on_load: function(){
+                setTimeout(function(){
+                    document.addEventListener("click", advanceMathScreen);
+                },200);
 
-    on_load: function(){
-
-    setTimeout(function(){
-
-        document.addEventListener("click", advanceMathScreen);
-
-    },200);
-
-    function advanceMathScreen(){
-
-        document.removeEventListener("click", advanceMathScreen);
-
-        jsPsych.finishTrial();
-
-    }
-
-},
-
-},
+                function advanceMathScreen(){
+                    document.removeEventListener("click", advanceMathScreen);
+                    jsPsych.finishTrial();
+                }
+            }
+        },
 
         // True / False Screen
-
         {
-
-            type: jsPsychHtmlButtonResponse,
-
-            stimulus:`
-
+            type: 'html-button-response',
+            stimulus: `
                 <div style="
                     font-size:48px;
                     font-family:Arial;
                 ">
-
                     ${problem.displayedAnswer}
-
                 </div>
-
             `,
-
             choices:["True","False"],
-
             data:{
-
-                correct:problem.isTrue
-
+                correct: problem.isTrue
             },
-
             on_finish:function(data){
-
                 data.correctMath =
-
                     (data.response===0 && problem.isTrue) ||
-
                     (data.response===1 && !problem.isTrue);
-
             }
-
         }
-
     ];
-
 }
 
 // =====================================================
@@ -409,82 +267,43 @@ function createMathTimeline(problem){
 // =====================================================
 
 timeline.push({
-
-    type: jsPsychHtmlKeyboardResponse,
-
+    type: 'html-keyboard-response',
     stimulus:function(){
-
         return createRecallGrid();
-
     },
-
-    choices:"NO_KEYS",
-
+    choices: jsPsych.NO_KEYS,
     trial_duration:null,
-
     on_load:function(){
-
         initializeRecallGrid(function(responses){
+            const score = scoreRecall(practiceTrial.letters, responses);
 
-    const score =
-    scoreRecall(
-
-        practiceTrial.letters,
-
-        responses
-
-    );
-
-    jsPsych.finishTrial({
-
-        presentedLetters:
-
-            practiceTrial.letters,
-
-        recalledLetters: responses,
-
-        correctLetters: score
-
-    });
-
-});
-
+            jsPsych.finishTrial({
+                presentedLetters: practiceTrial.letters,
+                recalledLetters: responses,
+                correctLetters: score
+            });
+        });
     }
-
 });
-
-// =====================================================
-// End
-// =====================================================
 
 // =====================================================
 // Feedback
 // =====================================================
 
 timeline.push({
-
-    type: jsPsychHtmlButtonResponse,
-
+    type: 'html-button-response',
     stimulus:function(){
-
-        const last =
-            jsPsych.data.get().last(1).values()[0];
+        const last = jsPsych.data.get().last(1).values()[0];
 
         return `
-
             <h2>Practice Feedback</h2>
-
             <p>You recalled <strong>${last.correctLetters}</strong>
             out of
             <strong>${last.presentedLetters.length}</strong>
             letters correctly.</p>
-
         `;
-
     },
-
     choices:["Continue"]
-
 });
 
 // =====================================================
@@ -492,5 +311,3 @@ timeline.push({
 // =====================================================
 
 jsPsych.run(timeline);
-=======
->>>>>>> 1b4e1aade3be69ff0a5cd7f2ff8b50f3964cf981
