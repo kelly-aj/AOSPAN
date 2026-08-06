@@ -163,7 +163,7 @@ function createLetterPresentation(letterArray){
         trials.push({
             type: 'html-keyboard-response',
             stimulus:"",
-            choices: jsPsych.NO_KEYS,
+            choices: "NO_KEYS",
             trial_duration:250
         });
     });
