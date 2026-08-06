@@ -156,7 +156,7 @@ function createLetterPresentation(letterArray){
                     ${letter}
                 </div>
             `,
-            choices: jsPsych.NO_KEYS,
+            choices: "NO_KEYS",
             trial_duration:800
         });
 
@@ -224,7 +224,7 @@ function createMathTimeline(problem){
                 <br><br>
                 <p>Work the problem, then click the mouse.</p>
             `,
-            choices: jsPsych.NO_KEYS,
+            choices: "NO_KEYS",
             response_ends_trial: false,
             on_load: function(){
                 setTimeout(function(){
@@ -271,7 +271,7 @@ timeline.push({
     stimulus:function(){
         return createRecallGrid();
     },
-    choices: jsPsych.NO_KEYS,
+    choices: "NO_KEYS",
     trial_duration:null,
     on_load:function(){
         initializeRecallGrid(function(responses){
