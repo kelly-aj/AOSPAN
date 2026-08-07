@@ -307,6 +307,45 @@ timeline.push({
 });
 
 // =====================================================
+// Diagnostic: find timeline items with invalid plugin types
+// =====================================================
+function findInvalidPluginTypes(node, path = "root"){
+    const problems = [];
+
+    function inspect(description, currentPath){
+        if (Array.isArray(description)){
+            description.forEach((child, i)=> inspect(child, `${currentPath}[${i}]`));
+            return;
+        }
+        if (typeof description !== 'object' || description === null) return;
+        // If it's a timeline description (has timeline) descend
+        if (description.timeline){
+            inspect(description.timeline, `${currentPath}.timeline`);
+            return;
+        }
+        // It's a trial description if it has a type
+        if (description.type !== undefined){
+            const t = description.type;
+            const hasInfo = t && typeof t === 'object' && t.info;
+            if (typeof t === 'string' || !hasInfo){
+                problems.push({ path: currentPath, type: t });
+            }
+        }
+    }
+
+    inspect(node, path);
+    return problems;
+}
+
+const diagnostics = findInvalidPluginTypes(timeline, 'timeline');
+if (diagnostics.length > 0){
+    console.error('Found timeline items with invalid plugin types. This will cause the "Plugin not recognized" error in jsPsych v7.');
+    console.table(diagnostics);
+    // Also surface a readable listing
+    diagnostics.forEach(d => console.error('Invalid type at', d.path, '->', d.type));
+}
+
+// =====================================================
 // Run
 // =====================================================
 
