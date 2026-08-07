@@ -346,6 +346,51 @@ if (diagnostics.length > 0){
 }
 
 // =====================================================
+// Compatibility mapping for legacy plugin name strings
+// If the running experiment still has string plugin names (e.g., "html-button-response"),
+// replace them with the plugin globals so jsPsych v7 can instantiate them.
+// This is a safe, small runtime patch while Pages caching propagates.
+// =====================================================
+function mapLegacyPluginTypes(node){
+    const mapping = {
+        'html-button-response': typeof jsPsychHtmlButtonResponse !== 'undefined' ? jsPsychHtmlButtonResponse : null,
+        'html-keyboard-response': typeof jsPsychHtmlKeyboardResponse !== 'undefined' ? jsPsychHtmlKeyboardResponse : null
+    };
+
+    let replaced = 0;
+
+    function inspectAndReplace(description){
+        if (Array.isArray(description)){
+            description.forEach(inspectAndReplace);
+            return;
+        }
+        if (!description || typeof description !== 'object') return;
+        if (description.timeline){
+            inspectAndReplace(description.timeline);
+            return;
+        }
+        if (description.type !== undefined){
+            if (typeof description.type === 'string'){
+                const mapped = mapping[description.type];
+                if (mapped){
+                    console.warn(`Mapping legacy plugin type '${description.type}' -> plugin global.`);
+                    description.type = mapped;
+                    replaced++;
+                }
+            }
+        }
+    }
+
+    inspectAndReplace(node);
+    return replaced;
+}
+
+const nReplaced = mapLegacyPluginTypes(timeline);
+if (nReplaced > 0){
+    console.log(`Mapped ${nReplaced} legacy plugin type(s) to plugin globals.`);
+}
+
+// =====================================================
 // Run
 // =====================================================
 
