@@ -116,7 +116,7 @@ function generateMathProblem(){
 // =====================================================
 
 timeline.push({
-    type: 'html-button-response',
+    type: jsPsychHtmlButtonResponse,
     stimulus: `
         <h1>Automated Shortened OSPAN</h1>
         <p>Development Version 0.4</p>
@@ -129,7 +129,7 @@ timeline.push({
 // =====================================================
 
 timeline.push({
-    type: 'html-button-response',
+    type: jsPsychHtmlButtonResponse,
     stimulus: `
         <h2>Letter Practice</h2>
         <p>Get ready.</p>
@@ -146,7 +146,7 @@ function createLetterPresentation(letterArray){
 
     letterArray.forEach(letter=>{
         trials.push({
-            type: 'html-keyboard-response',
+            type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div style="
                     font-size:72px;
@@ -161,7 +161,7 @@ function createLetterPresentation(letterArray){
         });
 
         trials.push({
-            type: 'html-keyboard-response',
+            type: jsPsychHtmlKeyboardResponse,
             stimulus:"",
             choices: "NO_KEYS",
             trial_duration:250
@@ -212,7 +212,7 @@ function createMathTimeline(problem){
     return [
         // Equation
         {
-            type: 'html-keyboard-response',
+            type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div style="
                     font-size:48px;
@@ -240,7 +240,7 @@ function createMathTimeline(problem){
 
         // True / False Screen
         {
-            type: 'html-button-response',
+            type: jsPsychHtmlButtonResponse,
             stimulus: `
                 <div style="
                     font-size:48px;
@@ -267,7 +267,7 @@ function createMathTimeline(problem){
 // =====================================================
 
 timeline.push({
-    type: 'html-keyboard-response',
+    type: jsPsychHtmlKeyboardResponse,
     stimulus:function(){
         return createRecallGrid();
     },
@@ -291,7 +291,7 @@ timeline.push({
 // =====================================================
 
 timeline.push({
-    type: 'html-button-response',
+    type: jsPsychHtmlButtonResponse,
     stimulus:function(){
         const last = jsPsych.data.get().last(1).values()[0];
 
