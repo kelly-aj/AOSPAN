@@ -259,13 +259,13 @@ for (let p=0; p<3; p++){
 }
 
 // short break
-timeline.push({ type: jsPsychHtmlButtonResponse, stimulus: '<p>Short break. Press Continue when ready for the math practice.</p>', choices: ['Continue'], data: { practice: true } });
+timeline.push({ type: jsPsychHtmlButtonResponse, stimulus: '<p>Press Continue when you are ready for the math practice.</p>', choices: ['Continue'], data: { practice: true } });
 
 // --- 2) Math-only practice: 3 trials ---
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
-    <h2>Math Practices</h2>
+    <h2>Math Practice</h2>
     <p>First, a math problem will appear on the screen. Solve the problem as quickly and accurately as you can. When you have solved it, click the mouse to continue.</p>
     <p>You will then see a proposed answer. Decide whether the proposed answer is <strong>True</strong> or <strong>False</strong>.</p>
     <p>Try to respond both quickly and accurately.</p>
@@ -325,17 +325,20 @@ for (let p=0; p<3; p++){
 }
 
 // short break
-timeline.push({ type: jsPsychHtmlButtonResponse, stimulus: '<p>Short break. Press Continue when ready for the combined practice.</p>', choices: ['Continue'], data: { practice: true } });
+timeline.push({ type: jsPsychHtmlButtonResponse, stimulus: '<p>. Press Continue when you are ready to practice both tasks together.</p>', choices: ['Continue'], data: { practice: true } });
 
 // --- 3) Combined practice: span = 2, 3 trials (math -> decision -> letter) ---
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
-    <h2>Practice 3 — Combined (math + letters)</h2>
-    <p>You'll practice the full sequence: math problem, decide True/False, then a letter appears.</p>
-    <p>Each trial uses span = 2 (2 math+letter items); there are 3 practice trials.</p>
+    <h2>Combined Practice</h2>
+    <p>Now you will practice the full task.</p>
+    <p>On each trial, you will first solve a math problem and decide whether the proposed answer is <strong>True</strong> or <strong>False</strong>.
+    <p>After making that decision, you will see a letter appear on the screen. </p>
+    <p>This sequence of math problem and then letter will repeat several times. After the last letter, the grid will appear and you should recall the letters you saw in the order in whcih they appeared </p>
+    <p>Remember: <strong>do your best to solve the math problems quickly and accurately while also remembering the letters.</strong></p>
   `,
-  choices: ['Begin Combined Practice']
+  choices: ['Continue']
 });
 
 for (let p=0; p<3; p++){
