@@ -442,6 +442,25 @@ for (let p=0; p<3; p++){
   timeline.push({ type: jsPsychHtmlButtonResponse, stimulus: '<p>Short break before the next practice trial.</p>', choices: ['Continue'], data: { practice: true } });
 }
 
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <p>You are now ready to begin the task.</p>
+    <p>The task will proceed just like the combined practice. That is, first you will solve a math problem and determine if the answer is True or False. You will then be shown a letter. </p>
+    <p>After the sequence of math problems and letters, you will be asked to recall the letters you saw, in the order you saw them.</p>
+    <p>The length of the sequences will vary across trials.</p>
+    <p>You should work as quickly and accurately as you can on the math problems while doing your best to remember the letters.</p>
+  `,
+  choices: ['Continue']
+});
+
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+   <p>When you are ready to begin, click <strong>Continue</strong>.</p>
+ `,
+  choices: [Continue']
+});
 // =====================================================
 // Run blocks for spans 3..7 in random order
 // =====================================================
@@ -453,7 +472,7 @@ for (const span of window.spans){
     // Block start screen
     timeline.push({
         type: jsPsychHtmlButtonResponse,
-        stimulus: `<h2>Span size: ${span}</h2><p>Press Continue to begin this block.</p>`,
+        stimulus: '<p>Press Continue to begin this block.</p>',
         choices:["Continue"]
     });
 
