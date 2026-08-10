@@ -261,7 +261,7 @@ for (let p=0; p<3; p++){
 // short break
 timeline.push({ type: jsPsychHtmlButtonResponse, stimulus: '<p>Press Continue when you are ready for the math practice.</p>', choices: ['Continue'], data: { practice: true } });
 
-// --- 2) Math-only practice: 3 trials ---
+// --- 2) Math-only practice: 15 trials ---
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
@@ -273,7 +273,16 @@ timeline.push({
   choices: ['Continue']
 });
 
-for (let p=0; p<3; p++){
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <p>You will now complete a series of math problems.</p>
+    <p>Press the button below when you are ready to begin.</p>
+      `,
+  choices: ['Begin Math Practice']
+});
+
+for (let p=0; p<15; p++){
   const problem = generateMathProblem();
 
   timeline.push({
@@ -324,6 +333,15 @@ for (let p=0; p<3; p++){
   });
 }
 
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <p>As you complete the task, it is important that you solve the math problems both <strong>quickly and accurately</strong> as possible.</p>
+    <p>Try to maintain an accuracy of at least <strong>85%</strong> on the math problems throughout the task.</p>    
+     `,
+  choices: ['Continue']
+});
+
 // short break
 timeline.push({ type: jsPsychHtmlButtonResponse, stimulus: '<p>. Press Continue when you are ready to practice both tasks together.</p>', choices: ['Continue'], data: { practice: true } });
 
@@ -339,6 +357,15 @@ timeline.push({
     <p>Remember: <strong>do your best to solve the math problems quickly and accurately while also remembering the letters.</strong></p>
   `,
   choices: ['Continue']
+});
+
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <p>When you are ready to begin the combined practice, click the button below.</p>
+    <p>You will complete three practice trials.</p>    
+     `,
+  choices: ['Begin Combined Practice']
 });
 
 for (let p=0; p<3; p++){
