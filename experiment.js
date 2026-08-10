@@ -118,8 +118,11 @@ function generateMathProblem(){
 timeline.push({
     type: jsPsychHtmlButtonResponse,
     stimulus: `
-        <h1>Automated Shortened OSPAN</h1>
-        <p>Development Version 0.4</p>
+        <p>In this task, you will complete a series of activities that involve solving math problems and remembering letters. </p>
+        <p>On each trial, you will first see a simple math problem. Solve the problem as quickly and accurately as you can. You will then be shown a proposed answer and asked whether the answer is <strong>True</strong> or <strong>False</strong>.</p>
+        <p>After making your decision, a letter will appear on the screen. Remember the letter and its position in the sequence.</p>
+        <p>You will repeat this process several times. At the end of each sequence, you will be asked to recall the letters in the order in which they appeared.</p>
+        <p>We will now practice both the letter and math portions of the task separately.The practice activities are designed to help you become familiar with each part of the task.</p>
     `,
     choices:["Continue"]
 });
@@ -132,9 +135,11 @@ timeline.push({
     type: jsPsychHtmlButtonResponse,
     stimulus: `
         <h2>Letter Practice</h2>
-        <p>Get ready.</p>
-    `,
-    choices:["Begin"]
+        <p>First, you will practice remembering letters.</p>
+        <p>You will see a series of letters on the screen, one at a time. You should try to remember each letter in the order presented.</p>
+        <p>After the last letter has been presented, you will see a grid of letters on the screen. You should select the letters you saw in the order presented. You can submit your answer by pressing the Enter button. </p>
+            `,
+    choices:["Continue"]
 });
 
 // =====================================================
@@ -196,25 +201,19 @@ function createOSPANTrial(setSize){
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
-    <h2>Practice Overview</h2>
-    <p>You'll complete three short practice sections:</p>
-    <ol>
-      <li>Letter recall (2 letters)</li>
-      <li>Math decisions</li>
-      <li>Combined (math + decision + letter) using spans of 2</li>
-    </ol>
-    <p>Each part has 3 practice trials.</p>
+    <p>If you cannot remember a letter for a particular position, click the <strong>Blank</strong> button.</p>
+    <p>Use the <strong>Blank</strong> button only when you do not remember the letter for that position. You can still enter letters for the other positions.</p>
+    <p>If you make a mistake, you can use the clear button to clear your responses and start over. </p>
   `,
-  choices: ['Begin practice']
+  choices: ['Continue']
 });
 
 // --- 1) Letter-only practice: 3 trials, span = 2 ---
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
-    <h2>Practice 1 — Letter Recall</h2>
-    <p>You will see 2 letters in sequence. Afterward, type them in order using the recall grid.</p>
     <p>There are 3 practice trials.</p>
+    <p>Are you ready to begin?.</p>
   `,
   choices: ['Begin Letter Practice']
 });
@@ -266,11 +265,12 @@ timeline.push({ type: jsPsychHtmlButtonResponse, stimulus: '<p>Short break. Pres
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
-    <h2>Practice 2 — Math Decisions</h2>
-    <p>You will be shown simple equations. Click to reveal, then choose True or False.</p>
-    <p>There are 3 practice problems.</p>
+    <h2>Math Practices</h2>
+    <p>First, a math problem will appear on the screen. Solve the problem as quickly and accurately as you can. When you have solved it, click the mouse to continue.</p>
+    <p>You will then see a proposed answer. Decide whether the proposed answer is <strong>True</strong> or <strong>False</strong>.</p>
+    <p>Try to respond both quickly and accurately.</p>
   `,
-  choices: ['Begin Math Practice']
+  choices: ['Continue']
 });
 
 for (let p=0; p<3; p++){
