@@ -384,18 +384,251 @@ timeline.push({
 });
 
 // short break
-timeline.push({ type: jsPsychHtmlButtonResponse, stimulus: '<p>Short break. Press Continue when ready for the combined practice.</p>', choices: ['Continue'], data: { practice: true } });
+timeline.push({ type: jsPsychHtmlButtonResponse, stimulus: '<p>. Press Continue when you are ready to practice both tasks together.</p>', choices: ['Continue'], data: { practice: true } });
 
-// Extra instruction screen BEFORE combined practice (new)
+// --- 3) Combined practice: span = 2, 3 trials (math -> decision -> letter) ---
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
-    <h2>Combined Practice — Instructions</h2>
-    <p>In this section you'll practice the full sequence: you'll see a math problem, make a True/False decision, then see a letter. After two such items you'll be asked to recall the letters in order.</p>
-    <p>There are 3 practice trials using a span of 2.</p>
+    <h2>Combined Practice</h2>
+    <p>Now you will practice the full task.</p>
+    <p>On each trial, you will first solve a math problem and decide whether the proposed answer is <strong>True</strong> or <strong>False</strong>.
+    <p>After making that decision, you will see a letter appear on the screen. </p>
+    <p>This sequence of math problem and then letter will repeat several times. After the last letter, the grid will appear and you should recall the letters you saw in the order in whcih they appeared </p>
+    <p>Remember: <strong>do your best to solve the math problems quickly and accurately while also remembering the letters.</strong></p>
   `,
-  choices: ['I understand, begin combined practice']
+  choices: ['Continue']
 });
 
-// --- 3) Combined practice: span = 2, 3 trials (math -> decision -> letter) ---
-...
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <p>When you are ready to begin the combined practice, click the button below.</p>
+    <p>You will complete three practice trials.</p>    
+     `,
+  choices: ['Begin Combined Practice']
+});
+
+for (let p=0; p<3; p++){
+  const blockTrial = createOSPANTrial(2); // span = 2
+
+  for (let i=0; i<blockTrial.letters.length; i++){
+    timeline.push({
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: `
+        <div style="font-size:48px; text-align:center;">
+          ${blockTrial.math[i].equation.replace(/=.+/, '= ?')}
+        </div>
+        <br><br>
+        <p>Work the problem, then click the mouse.</p>
+      `,
+      choices: "NO_KEYS",
+      response_ends_trial: false,
+      on_load: function(){
+        setTimeout(function(){
+          document.addEventListener("click", advanceMathScreen);
+        }, 200);
+        function advanceMathScreen(){
+          document.removeEventListener("click", advanceMathScreen);
+          jsPsych.finishTrial();
+        }
+      },
+      data: { practice: true, practiceType: 'combined_math_stem' }
+    });
+
+    timeline.push({
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `<div style="font-size:48px;">${blockTrial.math[i].displayedAnswer}</div>`,
+      choices: ['True','False'],
+      data: { practice: true, practiceType: 'combined_math_decision', correctAnswer: blockTrial.math[i].isTrue },
+      on_finish: function(data){
+        data.correctMath = (data.response === 0 && blockTrial.math[i].isTrue) || (data.response === 1 && !blockTrial.math[i].isTrue);
+      }
+    });
+
+    timeline.push(...createLetterPresentation([ blockTrial.letters[i] ]));
+  }
+
+  timeline.push({
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: function(){ return createRecallGrid(); },
+    choices: "NO_KEYS",
+    trial_duration: null,
+    data: { practice: true, practiceType: 'combined_recall' },
+    on_load: function(){
+      initializeRecallGrid(function(responses){
+        const score = scoreRecall(blockTrial.letters, responses);
+        jsPsych.finishTrial({
+          practice: true,
+          practiceType: 'combined',
+          span: blockTrial.letters.length,
+          presentedLetters: blockTrial.letters,
+          recalledLetters: responses,
+          correctLetters: score
+        });
+      });
+    }
+  });
+
+  timeline.push({
+    type: jsPsychHtmlButtonResponse,
+    stimulus: function(){
+      const last = jsPsych.data.get().last(1).values()[0];
+      return `<h3>Practice feedback</h3><p>You recalled <strong>${last.correctLetters}</strong> of <strong>${last.span}</strong> letters correctly.</p>`;
+    },
+    choices: ['Continue'],
+    data: { practice: true, practiceType: 'combined_feedback' }
+  });
+
+  timeline.push({ type: jsPsychHtmlButtonResponse, stimulus: '<p>Short break before the next practice trial.</p>', choices: ['Continue'], data: { practice: true } });
+}
+
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <p>You are now ready to begin the task.</p>
+    <p>The task will proceed just like the combined practice. That is, first you will solve a math problem and determine if the answer is True or False. You will then be shown a letter. </p>
+    <p>After the sequence of math problems and letters, you will be asked to recall the letters you saw, in the order you saw them.</p>
+    <p>The length of the sequences will vary across trials.</p>
+    <p>You should work as quickly and accurately as you can on the math problems while doing your best to remember the letters.</p>
+  `,
+  choices: ['Continue']
+});
+
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+   <p>When you are ready to begin, click <strong>Continue</strong>.</p>
+ `,
+  choices: [Continue']
+});
+// =====================================================
+// Run blocks for spans 3..7 in random order
+// =====================================================
+
+window.spans = jsPsych.randomization.shuffle([3,4,5,6,7]);
+console.log('Block order (spans):', window.spans);
+
+for (const span of window.spans){
+    // Block start screen
+    timeline.push({
+        type: jsPsychHtmlButtonResponse,
+        stimulus: '<p>Press Continue to begin this block.</p>',
+        choices:["Continue"]
+    });
+
+    const blockTrial = createOSPANTrial(span);
+
+    // Present math + letter for each item
+    for (let i=0;i<blockTrial.letters.length;i++){
+        timeline.push(...createMathTimeline(blockTrial.math[i]));
+        timeline.push(...createLetterPresentation([ blockTrial.letters[i] ]));
+    }
+
+    // Recall screen for this block
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus:function(){
+            return createRecallGrid();
+        },
+        choices: "NO_KEYS",
+        trial_duration:null,
+        on_load:function(){
+            initializeRecallGrid(function(responses){
+                const score = scoreRecall(blockTrial.letters, responses);
+
+                jsPsych.finishTrial({
+                    span: blockTrial.letters.length,
+                    presentedLetters: blockTrial.letters,
+                    recalledLetters: responses,
+                    correctLetters: score
+                });
+            });
+        }
+    });
+
+    // Feedback for this block
+    timeline.push({
+        type: jsPsychHtmlButtonResponse,
+        stimulus:function(){
+            const last = jsPsych.data.get().last(1).values()[0];
+
+            return `
+                <h2>Block feedback — span ${last.span}</h2>
+                <p>You recalled <strong>${last.correctLetters}</strong> of <strong>${last.span}</strong> letters correctly.</p>
+            `;
+        },
+        choices:["Continue"]
+    });
+
+    // Short break
+    timeline.push({
+        type: jsPsychHtmlButtonResponse,
+        stimulus: `<p>Short break. Press Continue when ready for the next block.</p>`,
+        choices:["Continue"]
+    });
+}
+
+// =====================================================
+// Create One Math Trial
+// =====================================================
+
+function createMathTimeline(problem){
+    return [
+        // Equation
+        {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: `
+                <div style="
+                    font-size:48px;
+                    font-family:Arial;
+                    text-align:center;
+                ">
+                    ${problem.equation.replace(/=.+/, "= ?")}
+                </div>
+                <br><br>
+                <p>Work the problem, then click the mouse.</p>
+            `,
+            choices: "NO_KEYS",
+            response_ends_trial: false,
+            on_load: function(){
+                setTimeout(function(){
+                    document.addEventListener("click", advanceMathScreen);
+                },200);
+
+                function advanceMathScreen(){
+                    document.removeEventListener("click", advanceMathScreen);
+                    jsPsych.finishTrial();
+                }
+            }
+        },
+
+        // True / False Screen
+        {
+            type: jsPsychHtmlButtonResponse,
+            stimulus: `
+                <div style="
+                    font-size:48px;
+                    font-family:Arial;
+                ">
+                    ${problem.displayedAnswer}
+                </div>
+            `,
+            choices:["True","False"],
+            data:{
+                correct: problem.isTrue
+            },
+            on_finish:function(data){
+                data.correctMath =
+                    (data.response===0 && problem.isTrue) ||
+                    (data.response===1 && !problem.isTrue);
+            }
+        }
+    ];
+}
+
+// =====================================================
+// Run
+// =====================================================
+
+jsPsych.run(timeline);
