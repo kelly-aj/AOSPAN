@@ -499,9 +499,10 @@ timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
    <p>When you are ready to begin, click <strong>Continue</strong>.</p>
- `,
+   `,
   choices: [Continue']
 });
+
 // =====================================================
 // Run blocks for spans 3..7 in random order
 // =====================================================
