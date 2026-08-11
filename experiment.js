@@ -500,7 +500,7 @@ timeline.push({
   stimulus: `
    <p>When you are ready to begin, click <strong>Continue</strong>.</p>
    `,
-  choices: [Continue']
+  choices: ['Continue']
 });
 
 // =====================================================
