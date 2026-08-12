@@ -125,7 +125,7 @@ timeline.push({
             align-items: center;
             min-height: 60vh;
             text-align: center;
-            font-size: min(2.5vw, 24px);
+            font-size: min(2.5vw, 20px);
             max-width: 800px;
             margin: 0 auto;
             line-height: 1.6;
@@ -152,6 +152,19 @@ timeline.push({
 timeline.push({
     type: jsPsychHtmlButtonResponse,
     stimulus: `
+        <div style="
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            text-align: center;
+            font-size: min(2.5vw, 20px);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            padding: 20px;
+        ">
         <h2>Letter Practice</h2>
         <p>Get ready.</p>
     `,
@@ -217,6 +230,19 @@ function createOSPANTrial(setSize){
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
+  <div style="
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            text-align: center;
+            font-size: min(2.5vw, 20px);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            padding: 20px;
+        ">
     <p>If you cannot remember a letter for a particular position, click the <strong>Blank</strong> button.</p>
     <p>Use the <strong>Blank</strong> button only when you do not remember the letter for that position. You can still enter letters for the other positions.</p>
     <p>If you make a mistake, you can use the clear button to clear your responses and start over. </p>
@@ -228,6 +254,19 @@ timeline.push({
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
+  <div style="
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            text-align: center;
+            font-size: min(2.5vw, 20px);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            padding: 20px;
+        ">
     <p>There are 3 practice trials.</p>
     <p>Are you ready to begin?</p>
   `,
@@ -281,6 +320,19 @@ timeline.push({ type: jsPsychHtmlButtonResponse, stimulus: '<p>Press Continue wh
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
+  <div style="
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            text-align: center;
+            font-size: min(2.5vw, 20px);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            padding: 20px;
+        ">
     <h2>Math Practice</h2>
     <p>First, a math problem will appear on the screen. Solve the problem as quickly and accurately as you can. When you have solved it, click the mouse to continue.</p>
     <p>You will then see a proposed answer. Decide whether the proposed answer is <strong>True</strong> or <strong>False</strong>.</p>
