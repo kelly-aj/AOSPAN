@@ -118,13 +118,31 @@ function generateMathProblem(){
 timeline.push({
     type: jsPsychHtmlButtonResponse,
     stimulus: `
-        <p>In this task, you will complete a series of activities that involve solving math problems and remembering letters. </p>
-        <p>On each trial, you will first see a simple math problem. Solve the problem as quickly and accurately as you can. You will then be shown a proposed answer and asked whether the answer is correct.</p>
-        <p>After making your decision, a letter will appear on the screen. Remember the letter and its position in the sequence.</p>
-        <p>You will repeat this process several times. At the end of each sequence, you will be asked to recall the letters in the order in which they appeared.</p>
-        <p>We will now practice both the letter and math portions of the task separately. The practice activities are designed to help you become familiar with each part of the task.</p>
+        <div style="
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            text-align: center;
+            font-size: min(2.5vw, 24px);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            padding: 20px;
+        ">
+            <p>In this task, you will complete a series of activities that involve solving math problems and remembering letters.</p>
+
+            <p>On each trial, you will first see a simple math problem. Solve the problem as quickly and accurately as you can. You will then be shown a proposed answer and asked whether the answer is correct.</p>
+
+            <p>After making your decision, a letter will appear on the screen. Remember the letter and its position in the sequence.</p>
+
+            <p>You will repeat this process several times. At the end of each sequence, you will be asked to recall the letters in the order in which they appeared.</p>
+
+            <p>We will now practice both the letter and math portions of the task separately. The practice activities are designed to help you become familiar with each part of the task.</p>
+        </div>
     `,
-    choices:["Continue"]
+    choices: ["Continue"]
 });
 
 // =====================================================
