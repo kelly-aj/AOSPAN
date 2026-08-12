@@ -627,7 +627,81 @@ function createMathTimeline(problem){
         }
     ];
 }
+// =====================================================
+// Scoring helper: compute OSPAN scores from main task rows
+// =====================================================
+function computeOSPANScores(){
+  // Only include non-practice rows (main task)
+  const mainRows = jsPsych.data.get().filter({practice:false}).values();
 
+  // Recall rows: those with presentedLetters/span
+  const recallRows = mainRows.filter(r => r.presentedLetters !== undefined && r.span !== undefined);
+
+  let oscore = 0;
+  let totalCorrect = 0;
+
+  recallRows.forEach(r => {
+    const correctLetters = (typeof r.correctLetters === 'number') ? r.correctLetters : 0;
+    totalCorrect += correctLetters;
+    if (correctLetters === r.span) {
+      oscore += r.span;
+    }
+  });
+
+  // Speed errors: timedOut stems in main task (timedOut === true)
+  const speedErrors = mainRows.filter(r => r.timedOut === true).length;
+
+  // Accuracy errors: incorrect math decisions (main task)
+  const accuracyErrors = mainRows.filter(r => r.practiceType === 'math_decision' && r.correctMath === false).length;
+
+  const mathErrors = speedErrors + accuracyErrors;
+
+  return {
+    oscore: oscore,
+    totalCorrect: totalCorrect,
+    mathErrors: mathErrors,
+    speedErrors: speedErrors,
+    accuracyErrors: accuracyErrors
+  };
+}
+
+// =====================================================
+// Completion screen: compute scores and redirect to Qualtrics
+// =====================================================
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: function(){
+    const scores = computeOSPANScores();
+    return `
+      <div class="aospan-center">
+        <h2>Task complete</h2>
+        <p>Thank you for completing the experiment.</p>
+        <p>OSPAN score (absolute): <strong>${scores.oscore}</strong></p>
+        <p>Total letters correct: <strong>${scores.totalCorrect}</strong></p>
+        <p>Math errors: <strong>${scores.mathErrors}</strong> (speed: ${scores.speedErrors}, accuracy: ${scores.accuracyErrors})</p>
+        <p>Press Finish to continue.</p>
+      </div>
+    `;
+  },
+  choices: ['Finish'],
+  on_finish: function(){
+    const scores = computeOSPANScores();
+    // Redirect to Qualtrics return URL with embedded-data query params
+    if (typeof window.qualtricsReturnUrl === 'string' && window.qualtricsReturnUrl.length > 0){
+      const params = new URLSearchParams();
+      params.set('OSPAN_abs', scores.oscore);
+      params.set('OSPAN_totalCorrect', scores.totalCorrect);
+      params.set('OSPAN_mathErrors', scores.mathErrors);
+      params.set('OSPAN_speedErrors', scores.speedErrors);
+      params.set('OSPAN_accuracyErrors', scores.accuracyErrors);
+
+      const sep = window.qualtricsReturnUrl.includes('?') ? '&' : '?';
+      window.location.href = window.qualtricsReturnUrl + sep + params.toString();
+    } else {
+      console.log('OSPAN results:', scores);
+    }
+  }
+});
 // =====================================================
 // Run
 // =====================================================
