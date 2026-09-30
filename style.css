@@ -32,6 +32,10 @@ body{
     align-items: center;
     min-height: 100vh;
     width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 20px;
 }
 
 .jspsych-html-button-response {
@@ -40,8 +44,6 @@ body{
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
 }
 
 .jspsych-html-button-response-button-container {
