@@ -57,6 +57,19 @@ body{
     max-width: 100% !important;
 }
 
+p {
+    font-size: 18px !important;
+    line-height: 1.6;
+}
+
+h2 {
+    font-size: 24px;
+}
+
+h3 {
+    font-size: 20px;
+}
+
 .recall-panel{
 
     width:700px;
