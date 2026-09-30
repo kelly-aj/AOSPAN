@@ -166,9 +166,12 @@ timeline.push({
             padding: 20px;
         ">
         <h2>Letter Practice</h2>
-        <p>Get ready.</p>
+        <p>In this portion of the task, you will shown a series of letters on the screen.</p>
+        <p>Your job is to remember the letters in the order presented.</p>
+        <p>To record your answer, you will select the letters you saw from a grid of letters in the order in which they were presented.</p>
+        <p>Click the button below to continue.</p>
     `,
-    choices:["Begin"]
+    choices:["Continue"]
 });
 
 // =====================================================
@@ -336,7 +339,7 @@ timeline.push({
     <h2>Math Practice</h2>
     <p>First, a math problem will appear on the screen. Solve the problem as quickly and accurately as you can. When you have solved it, click the mouse to continue.</p>
     <p>You will then see a proposed answer. Decide whether the proposed answer is <strong>True</strong> or <strong>False</strong>.</p>
-    <p>Try to respond both quickly and accurately.</p>
+    <p>Try to respond to both quickly and accurately.</p>
   `,
   choices: ['Continue']
 });
@@ -428,8 +431,7 @@ timeline.push({
     return `
       <h2>Math Practice Summary</h2>
       <p>Your mean solve time was <strong>${Math.round(mean)} ms</strong> (SD ${Math.round(sd)} ms).</p>
-      <p>During the main task the per-problem maximum solve time will be set to <strong>${maxMs} ms</strong> (mean + 2.5 × SD).</p>
-    `;
+     `;
   },
   choices: ['Continue'],
   data: { practice: true, practiceType: 'math_summary' }
@@ -464,7 +466,7 @@ timeline.push({
     <p>Now you will practice the full task.</p>
     <p>On each trial, you will first solve a math problem and decide whether the proposed answer is <strong>True</strong> or <strong>False</strong>.
     <p>After making that decision, you will see a letter appear on the screen. </p>
-    <p>This sequence of math problem and then letter will repeat several times. After the last letter, the grid will appear and you should recall the letters you saw in the order in whcih they appeared </p>
+    <p>This sequence of math problems and then letter will repeat several times. After the last letter, the grid will appear and you should recall the letters you saw in the order in whcih they appeared </p>
     <p>Remember: <strong>do your best to solve the math problems quickly and accurately while also remembering the letters.</strong></p>
   `,
   choices: ['Continue']
@@ -550,7 +552,7 @@ for (let p=0; p<3; p++){
     data: { practice: true, practiceType: 'combined_feedback' }
   });
 
-  timeline.push({ type: jsPsychHtmlButtonResponse, stimulus: '<p>Short break before the next practice trial.</p>', choices: ['Continue'], data: { practice: true } });
+  timeline.push({ type: jsPsychHtmlButtonResponse, stimulus: '<p>Press continue when you are ready to begin the next trial.</p>', choices: ['Continue'], data: { practice: true } });
 }
 
 timeline.push({
