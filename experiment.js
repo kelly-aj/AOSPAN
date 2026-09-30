@@ -133,7 +133,7 @@ timeline.push({
         ">
             <p>In this task, you will complete a series of activities that involve solving math problems and remembering letters.</p>
 
-            <p>On each trial, you will first see a simple math problem. Solve the problem as quickly and accurately as you can. You will then be shown a proposed answer and asked whether the answer is correct.</p>
+            <p>On each trial, you will first see a simple math problem. Solve the problem as quickly and accurately as you can. You will then be shown a proposed answer and asked whether the answ[...]
 
             <p>After making your decision, a letter will appear on the screen. Remember the letter and its position in the sequence.</p>
 
@@ -246,7 +246,7 @@ timeline.push({
             line-height: 1.6;
             padding: 20px;
         ">
-    <p>If you cannot remember a letter for a particular position, click the <strong>Blank</strong> button.</p>
+     <p>If you cannot remember a letter for a particular position, click the <strong>Blank</strong> button.</p>
     <p>Use the <strong>Blank</strong> button only when you do not remember the letter for that position. You can still enter letters for the other positions.</p>
     <p>If you make a mistake, you can use the clear button to clear your responses and start over. </p>
   `,
@@ -270,7 +270,7 @@ timeline.push({
             line-height: 1.6;
             padding: 20px;
         ">
-    <p>There are 3 practice trials.</p>
+     <p>There are 3 practice trials.</p>
     <p>Are you ready to begin?</p>
   `,
   choices: ['Begin Letter Practice']
@@ -336,7 +336,7 @@ timeline.push({
             line-height: 1.6;
             padding: 20px;
         ">
-    <h2>Math Practice</h2>
+     <h2>Math Practice</h2>
     <p>First, a math problem will appear on the screen. Solve the problem as quickly and accurately as you can. When you have solved it, click the mouse to continue.</p>
     <p>You will then see a proposed answer. Decide whether the proposed answer is <strong>True</strong> or <strong>False</strong>.</p>
     <p>Try to respond to both quickly and accurately.</p>
@@ -466,7 +466,7 @@ timeline.push({
     <p>Now you will practice the full task.</p>
     <p>On each trial, you will first solve a math problem and decide whether the proposed answer is <strong>True</strong> or <strong>False</strong>.
     <p>After making that decision, you will see a letter appear on the screen. </p>
-    <p>This sequence of math problem and then letter will repeat several times. After the last letter, the grid will appear and you should recall the letters you saw in the order in whcih they appeared </p>
+    <p>This sequence of math problems and then letter will repeat several times. After the last letter, the grid will appear and you should recall the letters you saw in the order in whcih they a[...]
     <p>Remember: <strong>do your best to solve the math problems quickly and accurately while also remembering the letters.</strong></p>
   `,
   choices: ['Continue']
@@ -606,11 +606,13 @@ for (const span of window.spans){
         },
         choices: "NO_KEYS",
         trial_duration:null,
+        data: { practice: false },
         on_load:function(){
             initializeRecallGrid(function(responses){
                 const score = scoreRecall(blockTrial.letters, responses);
 
                 jsPsych.finishTrial({
+                    practice: false,
                     span: blockTrial.letters.length,
                     presentedLetters: blockTrial.letters,
                     recalledLetters: responses,
@@ -637,7 +639,7 @@ for (const span of window.spans){
     // Short break
     timeline.push({
         type: jsPsychHtmlButtonResponse,
-        stimulus: `<p>Press Continue when ready for the next trisl.</p>`,
+        stimulus: `<p>Press Continue when ready for the next block.</p>`,
         choices:["Continue"]
     });
 }
@@ -664,6 +666,7 @@ function createMathTimeline(problem){
             `,
             choices: "NO_KEYS",
             response_ends_trial: false,
+            data: { practice: false },
             on_load: function(){
                 setTimeout(function(){
                     document.addEventListener("click", advanceMathScreen);
@@ -689,6 +692,7 @@ function createMathTimeline(problem){
             `,
             choices:["True","False"],
             data:{
+                practice: false,
                 correct: problem.isTrue
             },
             on_finish:function(data){
@@ -743,14 +747,10 @@ function computeOSPANScores(){
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: function(){
-    const scores = computeOSPANScores();
     return `
       <div class="aospan-center">
         <h2>Task complete</h2>
         <p>Thank you for completing the experiment.</p>
-        <p>OSPAN score (absolute): <strong>${scores.oscore}</strong></p>
-        <p>Total letters correct: <strong>${scores.totalCorrect}</strong></p>
-        <p>Math errors: <strong>${scores.mathErrors}</strong> (speed: ${scores.speedErrors}, accuracy: ${scores.accuracyErrors})</p>
         <p>Press Finish to continue.</p>
       </div>
     `;
@@ -758,6 +758,7 @@ timeline.push({
   choices: ['Finish'],
   on_finish: function(){
     const scores = computeOSPANScores();
+    console.log('OSPAN results:', scores);
     // Redirect to Qualtrics return URL with embedded-data query params
     if (typeof window.qualtricsReturnUrl === 'string' && window.qualtricsReturnUrl.length > 0){
       const params = new URLSearchParams();
@@ -770,7 +771,7 @@ timeline.push({
       const sep = window.qualtricsReturnUrl.includes('?') ? '&' : '?';
       window.location.href = window.qualtricsReturnUrl + sep + params.toString();
     } else {
-      console.log('OSPAN results:', scores);
+      console.log('No Qualtrics return URL set');
     }
   }
 });
