@@ -18,6 +18,7 @@ body{
     width: 100%;
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 20px 0;
@@ -39,6 +40,8 @@ body{
     justify-content: center;
     align-items: center;
     width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .jspsych-html-button-response-button-container {
@@ -47,6 +50,7 @@ body{
     gap: 20px;
     flex-wrap: wrap;
     margin-top: 20px;
+    width: 100%;
 }
 
 .recall-panel{
