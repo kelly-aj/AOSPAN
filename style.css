@@ -30,10 +30,9 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
+    width: 100% !important;
+    max-width: 800px !important;
+    margin: 0 auto !important;
     box-sizing: border-box;
     padding: 20px;
 }
@@ -43,16 +42,19 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 100% !important;
+    max-width: 800px !important;
+    margin: 0 auto !important;
 }
 
 .jspsych-html-button-response-button-container {
-    display: flex;
-    justify-content: center;
+    display: flex !important;
+    justify-content: center !important;
     gap: 20px;
     flex-wrap: wrap;
     margin-top: 20px;
-    width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
 }
 
 .recall-panel{
