@@ -6,10 +6,19 @@
 body{
     font-family: Arial, Helvetica, sans-serif;
     background:white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
 }
 
 .jspsych-content{
     max-width:900px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .recall-panel{
