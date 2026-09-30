@@ -166,7 +166,7 @@ timeline.push({
             padding: 20px;
         ">
         <h2>Letter Practice</h2>
-        <p>In this portion of the task, you will shown a series of letters on the screen.</p>
+        <p>In this portion of the task, you will be shown a series of letters on the screen.</p>
         <p>Your job is to remember the letters in the order presented.</p>
         <p>To record your answer, you will select the letters you saw from a grid of letters in the order in which they were presented.</p>
         <p>Click the button below to continue.</p>
@@ -466,7 +466,7 @@ timeline.push({
     <p>Now you will practice the full task.</p>
     <p>On each trial, you will first solve a math problem and decide whether the proposed answer is <strong>True</strong> or <strong>False</strong>.
     <p>After making that decision, you will see a letter appear on the screen. </p>
-    <p>This sequence of math problems and then letter will repeat several times. After the last letter, the grid will appear and you should recall the letters you saw in the order in whcih they appeared </p>
+    <p>This sequence of math problem and then letter will repeat several times. After the last letter, the grid will appear and you should recall the letters you saw in the order in whcih they appeared </p>
     <p>Remember: <strong>do your best to solve the math problems quickly and accurately while also remembering the letters.</strong></p>
   `,
   choices: ['Continue']
@@ -637,7 +637,7 @@ for (const span of window.spans){
     // Short break
     timeline.push({
         type: jsPsychHtmlButtonResponse,
-        stimulus: `<p>Short break. Press Continue when ready for the next block.</p>`,
+        stimulus: `<p>Press Continue when ready for the next trisl.</p>`,
         choices:["Continue"]
     });
 }
