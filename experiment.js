@@ -13,6 +13,11 @@ const jsPsych = initJsPsych({
     }
 });
 
+const urlParams = new URLSearchParams(window.location.search);
+const prolificPID = urlParams.get('PROLIFIC_PID') || urlParams.get('prolific_pid') || urlParams.get('pid') || null;
+const prolificStudyID = urlParams.get('STUDY_ID') || urlParams.get('study_id') || null;
+const prolificSessionID = urlParams.get('SESSION_ID') || urlParams.get('session_id') || null;
+
 const timeline = [];
 
 // =====================================================
@@ -133,7 +138,7 @@ timeline.push({
         ">
             <p>In this task, you will complete a series of activities that involve solving math problems and remembering letters.</p>
 
-            <p>On each trial, you will first see a simple math problem. Solve the problem as quickly and accurately as you can. You will then be shown a proposed answer and asked whether the answ[...]
+            <p>On each trial, you will first see a simple math problem. Solve the problem as quickly and accurately as you can. You will then be shown a proposed answer and asked whether the answer is correct.</p>
 
             <p>After making your decision, a letter will appear on the screen. Remember the letter and its position in the sequence.</p>
 
@@ -246,7 +251,7 @@ timeline.push({
             line-height: 1.6;
             padding: 20px;
         ">
-     <p>If you cannot remember a letter for a particular position, click the <strong>Blank</strong> button.</p>
+    <p>If you cannot remember a letter for a particular position, click the <strong>Blank</strong> button.</p>
     <p>Use the <strong>Blank</strong> button only when you do not remember the letter for that position. You can still enter letters for the other positions.</p>
     <p>If you make a mistake, you can use the clear button to clear your responses and start over. </p>
   `,
@@ -270,7 +275,7 @@ timeline.push({
             line-height: 1.6;
             padding: 20px;
         ">
-     <p>There are 3 practice trials.</p>
+    <p>There are 3 practice trials.</p>
     <p>Are you ready to begin?</p>
   `,
   choices: ['Begin Letter Practice']
@@ -336,7 +341,7 @@ timeline.push({
             line-height: 1.6;
             padding: 20px;
         ">
-     <h2>Math Practice</h2>
+    <h2>Math Practice</h2>
     <p>First, a math problem will appear on the screen. Solve the problem as quickly and accurately as you can. When you have solved it, click the mouse to continue.</p>
     <p>You will then see a proposed answer. Decide whether the proposed answer is <strong>True</strong> or <strong>False</strong>.</p>
     <p>Try to respond to both quickly and accurately.</p>
@@ -466,7 +471,7 @@ timeline.push({
     <p>Now you will practice the full task.</p>
     <p>On each trial, you will first solve a math problem and decide whether the proposed answer is <strong>True</strong> or <strong>False</strong>.
     <p>After making that decision, you will see a letter appear on the screen. </p>
-    <p>This sequence of math problems and then letter will repeat several times. After the last letter, the grid will appear and you should recall the letters you saw in the order in whcih they a[...]
+    <p>This sequence of math problem and then letter will repeat several times. After the last letter, the grid will appear and you should recall the letters you saw in the order in whcih they appeared.</p>
     <p>Remember: <strong>do your best to solve the math problems quickly and accurately while also remembering the letters.</strong></p>
   `,
   choices: ['Continue']
@@ -759,19 +764,26 @@ timeline.push({
   on_finish: function(){
     const scores = computeOSPANScores();
     console.log('OSPAN results:', scores);
+
+    const params = new URLSearchParams();
+
+    if (prolificPID) params.set('PROLIFIC_PID', prolificPID);
+    if (prolificStudyID) params.set('STUDY_ID', prolificStudyID);
+    if (prolificSessionID) params.set('SESSION_ID', prolificSessionID);
+
+    params.set('OSPAN_abs', scores.oscore);
+    params.set('OSPAN_totalCorrect', scores.totalCorrect);
+    params.set('OSPAN_mathErrors', scores.mathErrors);
+    params.set('OSPAN_speedErrors', scores.speedErrors);
+    params.set('OSPAN_accuracyErrors', scores.accuracyErrors);
+
     // Redirect to Qualtrics return URL with embedded-data query params
     if (typeof window.qualtricsReturnUrl === 'string' && window.qualtricsReturnUrl.length > 0){
-      const params = new URLSearchParams();
-      params.set('OSPAN_abs', scores.oscore);
-      params.set('OSPAN_totalCorrect', scores.totalCorrect);
-      params.set('OSPAN_mathErrors', scores.mathErrors);
-      params.set('OSPAN_speedErrors', scores.speedErrors);
-      params.set('OSPAN_accuracyErrors', scores.accuracyErrors);
-
       const sep = window.qualtricsReturnUrl.includes('?') ? '&' : '?';
       window.location.href = window.qualtricsReturnUrl + sep + params.toString();
     } else {
       console.log('No Qualtrics return URL set');
+      console.log('Qualtrics params:', Object.fromEntries(params.entries()));
     }
   }
 });
