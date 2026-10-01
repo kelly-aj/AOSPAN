@@ -6,6 +6,9 @@ console.log("experiment.v2.js loaded");
 // Random Letter Practice
 // =====================================================
 
+// Set Qualtrics return URL
+window.qualtricsReturnUrl = "https://merceruniversity.co1.qualtrics.com/jfe/form/SV_1zccezoNm8UGOrA";
+
 // Initialize jsPsych
 const jsPsych = initJsPsych({
     on_finish: function () {
@@ -471,7 +474,7 @@ timeline.push({
     <p>Now you will practice the full task.</p>
     <p>On each trial, you will first solve a math problem and decide whether the proposed answer is <strong>True</strong> or <strong>False</strong>.
     <p>After making that decision, you will see a letter appear on the screen. </p>
-    <p>This sequence of math problem and then letter will repeat several times. After the last letter, the grid will appear and you should recall the letters you saw in the order in whcih they appeared.</p>
+    <p>This sequence of math problem and then letter will repeat several times. After the last letter, the grid will appear and you should recall the letters you saw in the order in which they appeared.</p>
     <p>Remember: <strong>do your best to solve the math problems quickly and accurately while also remembering the letters.</strong></p>
   `,
   choices: ['Continue']
