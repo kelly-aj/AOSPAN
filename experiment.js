@@ -590,7 +590,10 @@ timeline.push({
 window.spans = jsPsych.randomization.shuffle([3,4,5,6,7]);
 console.log('Block order (spans):', window.spans);
 
-for (const span of window.spans){
+for (let blockIndex = 0; blockIndex < window.spans.length; blockIndex++){
+    const span = window.spans[blockIndex];
+    const isLastBlock = (blockIndex === window.spans.length - 1);
+
     // Block start screen
     timeline.push({
         type: jsPsychHtmlButtonResponse,
@@ -644,12 +647,14 @@ for (const span of window.spans){
         choices:["Continue"]
     });
 
-    // Short break
-    timeline.push({
-        type: jsPsychHtmlButtonResponse,
-        stimulus: `<p>Press Continue when ready for the next block.</p>`,
-        choices:["Continue"]
-    });
+    // Short break — only if NOT the last block
+    if (!isLastBlock) {
+        timeline.push({
+            type: jsPsychHtmlButtonResponse,
+            stimulus: `<p>Press Continue when ready for the next block.</p>`,
+            choices:["Continue"]
+        });
+    }
 }
 
 // =====================================================
